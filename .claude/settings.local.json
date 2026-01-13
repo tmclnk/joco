@@ -9,7 +9,8 @@
       "Bash(export PATH=\"/opt/homebrew/bin:$PATH\")",
       "Bash(./mvnw clean:*)",
       "Bash(java:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
     ]
   },
   "enabledPlugins": {
