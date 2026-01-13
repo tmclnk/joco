@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- 
+        Logback configuration for joco CLI tool
+        Optimized for low-memory systems (8GB RAM) and fast CLI execution
+    -->
+
+    <!-- Console Appender: Direct output to stdout -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <!-- Simple, readable format suitable for CLI tools -->
+            <!-- Pattern: [LEVEL] Class.method - Message -->
+            <pattern>%d{HH:mm:ss.SSS} [%level] %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Root Logger Configuration -->
+    <!-- Default level: INFO - shows important events without verbosity -->
+    <!-- Change to DEBUG during development for detailed troubleshooting -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE" />
+    </root>
+
+    <!-- Application-specific logger for joco -->
+    <!-- Can be set to DEBUG independently for development without affecting libraries -->
+    <logger name="org.example" level="INFO" additivity="false">
+        <appender-ref ref="CONSOLE" />
+    </logger>
+
+    <!-- Reduce noise from HTTP client libraries if needed -->
+    <!-- Uncomment during production to minimize external library logging -->
+    <!-- 
+    <logger name="java.net.http" level="WARN" />
+    -->
+
+</configuration>

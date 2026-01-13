@@ -90,6 +90,17 @@
                                     <mainClass>org.example.Main</mainClass>
                                 </transformer>
                             </transformers>
+                            <!-- Exclude signature files from signed JARs to prevent security exceptions -->
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
                             <!-- Minimize JAR size by removing unused classes -->
                             <minimizeJar>false</minimizeJar>
                             <!-- Create a shaded JAR without classifier -->
