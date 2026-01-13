@@ -14,4 +14,91 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <dependencies>
+        <!-- JSON Processing: Gson - lightweight (250KB), fast, and well-maintained by Google -->
+        <!-- Used for parsing Ollama API responses and .joco.config file -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.11.0</version>
+        </dependency>
+
+        <!-- Git Integration: JGit - pure Java implementation of Git (~5MB) -->
+        <!-- Used to read staged changes and repository information -->
+        <!-- JGit is the industry-standard Java Git library, maintained by Eclipse Foundation -->
+        <!-- Version 7.1.0.202411261347-r is compatible with Java 11+ including Java 25 -->
+        <dependency>
+            <groupId>org.eclipse.jgit</groupId>
+            <artifactId>org.eclipse.jgit</artifactId>
+            <version>7.1.0.202411261347-r</version>
+        </dependency>
+
+        <!-- HTTP Client: Using built-in java.net.http (Java 11+) -->
+        <!-- No external dependency needed - included in JDK -->
+        <!-- For Ollama API communication -->
+
+        <!-- Logging Framework: SLF4J + Logback -->
+        <!-- SLF4J API: Industry-standard logging facade (41KB) - allows switching backends later -->
+        <!-- Provides clean, simple logging interface throughout the application -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>2.0.16</version>
+        </dependency>
+
+        <!-- Logback Classic: SLF4J implementation (~550KB total with core) -->
+        <!-- Lightweight, fast, and mature - successor to Log4j by same author -->
+        <!-- Perfect for CLI tools: minimal overhead, efficient performance on low-memory systems -->
+        <!-- Includes logback-core automatically as transitive dependency -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.5.12</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>joco</finalName>
+        <plugins>
+            <!-- Maven Compiler Plugin: Explicitly configure Java 25 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.13.0</version>
+                <configuration>
+                    <source>25</source>
+                    <target>25</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+
+            <!-- Maven Shade Plugin: Create executable fat JAR with all dependencies -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.6.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <transformers>
+                                <!-- Set Main-Class for executable JAR -->
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>org.example.Main</mainClass>
+                                </transformer>
+                            </transformers>
+                            <!-- Minimize JAR size by removing unused classes -->
+                            <minimizeJar>false</minimizeJar>
+                            <!-- Create a shaded JAR without classifier -->
+                            <shadedArtifactAttached>false</shadedArtifactAttached>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
 </project>
