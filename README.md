@@ -2,9 +2,9 @@
 
 A lightweight clone of opencommit that generates meaningful commit messages using Ollama local LLMs.
 
-## Recommended Ollama Models for Low-End Hardware
+## Recommended Ollama Models
 
-For a MacBook Air with 8GB RAM, you'll want to use smaller, efficient models. Here are the recommended options based on 2026 benchmarks:
+joco works best with lightweight, efficient models that provide fast inference. Here are the recommended options based on 2026 benchmarks:
 
 ### Primary Recommendation: Qwen2.5-Coder
 
@@ -17,13 +17,13 @@ ollama pull qwen2.5-coder:0.5b
 - Surprisingly capable for commit messages
 - Perfect if you want minimal resource usage
 
-**qwen2.5-coder:1.5b** (Best balance for 8GB RAM)
+**qwen2.5-coder:1.5b** (Best overall choice)
 ```bash
 ollama pull qwen2.5-coder:1.5b
 ```
 - Size: ~986MB
 - Specifically trained for code understanding and generation
-- Very fast inference on limited hardware
+- Very fast inference with minimal memory footprint
 - Excellent at understanding diffs and generating concise commit messages
 - Most popular choice for lightweight coding assistants
 
@@ -33,7 +33,7 @@ ollama pull qwen2.5-coder:3b
 ```
 - Size: ~1.9GB
 - Better quality than 1.5b while still being lightweight
-- Runs comfortably on 8GB RAM
+- Fast inference with modest memory requirements
 - Recommended if you want more detailed commit messages
 
 ### Alternatives
@@ -80,21 +80,20 @@ joco
 
 ## Model Performance Comparison
 
-| Model | Size | Speed on 8GB | Quality | Best For |
-|-------|------|--------------|---------|----------|
-| qwen2.5-coder:0.5b | ~398MB | Lightning Fast | Decent | Absolute minimal resources |
-| qwen2.5-coder:1.5b | ~986MB | Very Fast | Good | Best overall choice for 8GB |
+| Model | Size | Speed | Quality | Best For |
+|-------|------|-------|---------|----------|
+| qwen2.5-coder:0.5b | ~398MB | Lightning Fast | Decent | Maximum speed |
+| qwen2.5-coder:1.5b | ~986MB | Very Fast | Good | Best overall choice |
 | qwen2.5-coder:3b | ~1.9GB | Fast | Better | Higher quality, still efficient |
 | deepseek-coder:1.3b | ~775MB | Very Fast | Good | Alternative to Qwen |
 | tinyllama:1.1b | ~638MB | Very Fast | Basic | Ultra-lightweight fallback |
 
-## Tips for 8GB RAM
+## Performance Tips
 
-- Start with the 1.5b model - it's the sweet spot for 8GB systems
-- Close other memory-intensive applications when running joco
-- The 0.5b and 1.5b models are surprisingly capable for commit messages
-- Avoid 7B+ models unless you're willing to close all other apps (they need ~16GB recommended)
-- Use Q4_K_M quantization if available for better performance
+- The 1.5b model is the sweet spot for most users
+- Smaller models (0.5b-1.5b) are surprisingly capable for commit messages
+- For 7B+ models, ensure you have at least 16GB RAM available
+- Use Q4_K_M quantization if available for faster inference
 
 ## Configuration
 
