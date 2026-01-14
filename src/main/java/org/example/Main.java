@@ -1,5 +1,6 @@
 package org.example;
 
+import org.example.cli.CommitMessageEditor;
 import org.example.config.Config;
 import org.example.config.ConfigReader;
 import org.example.git.GitException;
@@ -108,15 +109,56 @@ public class Main {
             String commitMessage = response.response().trim();
             logger.info("Generated commit message: {}", commitMessage);
 
-            // Step 6: Display result to user
-            System.out.println("\n" + "=".repeat(60));
-            System.out.println("Generated Commit Message:");
-            System.out.println("=".repeat(60));
-            System.out.println(commitMessage);
-            System.out.println("=".repeat(60));
+            // Step 6: Interactive prompt for user action
+            CommitMessageEditor editor = new CommitMessageEditor();
+            CommitMessageEditor.Result result = editor.prompt(commitMessage);
 
-            System.out.println("\nTo commit with this message:");
-            System.out.println("  git commit -m \"" + commitMessage + "\"");
+            // Handle user's choice
+            switch (result.action()) {
+                case ACCEPT -> {
+                    // Continue to commit with the current message
+                    commitMessage = result.commitMessage();
+                    logger.info("User accepted commit message");
+                }
+                case EDIT -> {
+                    // User edited the message, use the edited version
+                    commitMessage = result.commitMessage();
+                    logger.info("User edited commit message to: {}", commitMessage);
+                }
+                case REGENERATE -> {
+                    // TODO: Implement regeneration in future task (joco-fco or related)
+                    System.out.println("\nRegeneration not yet implemented.");
+                    System.out.println("This feature will be available in a future version.");
+                    System.exit(0);
+                    return;
+                }
+                case CANCEL -> {
+                    // User cancelled, exit gracefully
+                    logger.info("User cancelled commit operation");
+                    System.exit(0);
+                    return;
+                }
+            }
+
+            // Step 7: Execute commit
+            System.out.println("\nCommitting changes...");
+            String commitHash;
+            try {
+                commitHash = gitRepo.commit(commitMessage);
+            } catch (GitException e) {
+                System.out.println("ERROR: Failed to create commit.");
+                System.out.println(e.getMessage());
+                logger.error("Commit execution failed", e);
+                System.exit(1);
+                return; // Unreachable, but helps compiler
+            }
+
+            // Step 8: Display success message with commit hash
+            System.out.println("\n" + "=".repeat(60));
+            System.out.println("Commit created successfully!");
+            System.out.println("=".repeat(60));
+            System.out.println("Commit hash: " + commitHash);
+            System.out.println("=".repeat(60));
 
         } catch (GitException e) {
             System.out.println("\nERROR: Git operation failed.");

@@ -42,13 +42,26 @@ public class Config {
 
     /**
      * Validates the model parameter.
+     * Model must follow the Ollama format: name or name:tag
+     * where name contains alphanumeric characters, dots, hyphens, or underscores
+     * and optional tag follows a colon.
      *
      * @param model the model to validate
-     * @throws IllegalArgumentException if model is null or empty
+     * @throws IllegalArgumentException if model is null, empty, or has invalid format
      */
     private void validateModel(String model) {
         if (model == null || model.trim().isEmpty()) {
             throw new IllegalArgumentException("Model cannot be null or empty");
+        }
+
+        // Validate model format: name or name:tag
+        // Name can contain alphanumeric chars, dots, hyphens, underscores
+        // Tag (optional) can contain alphanumeric chars, dots, hyphens, underscores
+        String modelPattern = "^[a-zA-Z0-9._-]+(:?[a-zA-Z0-9._-]+)?$";
+        if (!model.matches(modelPattern)) {
+            throw new IllegalArgumentException(
+                "Model name must follow Ollama format (e.g., 'qwen2.5-coder' or 'qwen2.5-coder:1.5b'). " +
+                "Only alphanumeric characters, dots, hyphens, and underscores are allowed, got: " + model);
         }
     }
 
@@ -56,11 +69,12 @@ public class Config {
      * Validates the maxTokens parameter.
      *
      * @param maxTokens the maxTokens to validate
-     * @throws IllegalArgumentException if maxTokens is not positive
+     * @throws IllegalArgumentException if maxTokens is not in the valid range [50, 500]
      */
     private void validateMaxTokens(int maxTokens) {
-        if (maxTokens <= 0) {
-            throw new IllegalArgumentException("Max tokens must be positive, got: " + maxTokens);
+        if (maxTokens < 50 || maxTokens > 500) {
+            throw new IllegalArgumentException(
+                "Max tokens must be between 50 and 500, got: " + maxTokens);
         }
     }
 

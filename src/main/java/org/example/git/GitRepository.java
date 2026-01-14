@@ -121,4 +121,62 @@ public class GitRepository {
             return false;
         }
     }
+
+    /**
+     * Executes a git commit with the provided message.
+     *
+     * @param message the commit message to use
+     * @return the commit hash (SHA) of the created commit
+     * @throws GitException if the commit fails or cannot retrieve the commit hash
+     */
+    public String commit(String message) throws GitException {
+        if (message == null || message.trim().isEmpty()) {
+            throw new GitException("Commit message cannot be empty");
+        }
+
+        try {
+            // Execute git commit
+            Process commitProcess = new ProcessBuilder("git", "commit", "-m", message)
+                .redirectErrorStream(true)
+                .start();
+
+            BufferedReader commitReader = new BufferedReader(new InputStreamReader(commitProcess.getInputStream()));
+            StringBuilder commitOutput = new StringBuilder();
+            String line;
+            while ((line = commitReader.readLine()) != null) {
+                commitOutput.append(line).append("\n");
+            }
+
+            int commitExitCode = commitProcess.waitFor();
+            if (commitExitCode != 0) {
+                String errorMsg = commitOutput.toString().trim();
+                if (errorMsg.isEmpty()) {
+                    errorMsg = "Commit failed with exit code: " + commitExitCode;
+                }
+                throw new GitException("Failed to create commit: " + errorMsg);
+            }
+
+            // Get the commit hash of the newly created commit
+            Process hashProcess = new ProcessBuilder("git", "rev-parse", "HEAD")
+                .redirectErrorStream(true)
+                .start();
+
+            BufferedReader hashReader = new BufferedReader(new InputStreamReader(hashProcess.getInputStream()));
+            String commitHash = hashReader.readLine();
+
+            int hashExitCode = hashProcess.waitFor();
+            if (hashExitCode != 0 || commitHash == null || commitHash.trim().isEmpty()) {
+                throw new GitException("Failed to retrieve commit hash after successful commit");
+            }
+
+            logger.info("Commit created successfully with hash: {}", commitHash.trim());
+            return commitHash.trim();
+
+        } catch (IOException e) {
+            throw new GitException("Failed to execute commit: " + e.getMessage(), e);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new GitException("Operation interrupted while creating commit", e);
+        }
+    }
 }
