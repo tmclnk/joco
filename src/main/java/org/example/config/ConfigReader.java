@@ -81,7 +81,8 @@ public class ConfigReader {
     }
 
     /**
-     * Creates a Config object from a ConfigDto, using defaults for missing values.
+     * Creates a Config object from a ConfigDto, using defaults for missing or invalid values.
+     * Logs warnings for each invalid field while using defaults.
      *
      * @param dto the data transfer object from JSON parsing
      * @return a Config object with values from dto or defaults
@@ -90,18 +91,49 @@ public class ConfigReader {
         // Create default config to get default values
         Config defaults = new Config();
 
-        String model = (dto.model != null && !dto.model.trim().isEmpty())
-            ? dto.model
-            : defaults.getModel();
+        // Validate and use model
+        String model = defaults.getModel();
+        if (dto.model != null && !dto.model.trim().isEmpty()) {
+            try {
+                // Try to create a temp config to validate the model
+                new Config(dto.model, defaults.getMaxTokens(), defaults.getTemperature());
+                model = dto.model;
+            } catch (IllegalArgumentException e) {
+                logger.warn("Invalid model value '{}': {}. Using default: {}",
+                    dto.model, e.getMessage(), defaults.getModel());
+            }
+        } else if (dto.model != null) {
+            logger.warn("Empty model value provided. Using default: {}", defaults.getModel());
+        }
 
-        int maxTokens = dto.maxTokens > 0
-            ? dto.maxTokens
-            : defaults.getMaxTokens();
+        // Validate and use maxTokens
+        int maxTokens = defaults.getMaxTokens();
+        if (dto.maxTokens != 0) {
+            try {
+                // Try to create a temp config to validate maxTokens
+                new Config(defaults.getModel(), dto.maxTokens, defaults.getTemperature());
+                maxTokens = dto.maxTokens;
+            } catch (IllegalArgumentException e) {
+                logger.warn("Invalid maxTokens value '{}': {}. Using default: {}",
+                    dto.maxTokens, e.getMessage(), defaults.getMaxTokens());
+            }
+        }
 
-        double temperature = dto.temperature >= 0.0
-            ? dto.temperature
-            : defaults.getTemperature();
+        // Validate and use temperature
+        double temperature = defaults.getTemperature();
+        if (dto.temperature != 0.0) {
+            try {
+                // Try to create a temp config to validate temperature
+                new Config(defaults.getModel(), defaults.getMaxTokens(), dto.temperature);
+                temperature = dto.temperature;
+            } catch (IllegalArgumentException e) {
+                logger.warn("Invalid temperature value '{}': {}. Using default: {}",
+                    dto.temperature, e.getMessage(), defaults.getTemperature());
+            }
+        }
 
+        // Create final config with validated values
+        // At this point all values are valid, so this won't throw
         return new Config(model, maxTokens, temperature);
     }
 

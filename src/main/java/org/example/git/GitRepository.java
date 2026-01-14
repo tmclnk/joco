@@ -8,6 +8,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Handles Git repository operations including detection, navigation, and diff retrieval.
@@ -15,6 +18,27 @@ import java.nio.file.Paths;
  */
 public class GitRepository {
     private static final Logger logger = LoggerFactory.getLogger(GitRepository.class);
+
+    private final DiffParser diffParser;
+    private final DiffFormatter diffFormatter;
+
+    /**
+     * Creates a new GitRepository instance with default diff parser and formatter.
+     */
+    public GitRepository() {
+        this.diffParser = new DiffParser();
+        this.diffFormatter = new DiffFormatter();
+    }
+
+    /**
+     * Creates a new GitRepository instance with custom diff formatter.
+     *
+     * @param maxDiffSize maximum size for formatted diffs
+     */
+    public GitRepository(int maxDiffSize) {
+        this.diffParser = new DiffParser();
+        this.diffFormatter = new DiffFormatter(maxDiffSize);
+    }
 
     /**
      * Checks if the current directory is inside a Git repository.
@@ -123,6 +147,55 @@ public class GitRepository {
     }
 
     /**
+     * Retrieves the staged changes and parses them into structured file changes.
+     * This method identifies changed files, their types, and handles binary files.
+     *
+     * @return a list of parsed file changes
+     * @throws GitException if not in a Git repository or no staged changes exist
+     */
+    public List<DiffParser.FileChange> getParsedStagedDiff() throws GitException {
+        String rawDiff = getStagedDiff();
+        List<DiffParser.FileChange> changes = diffParser.parse(rawDiff);
+
+        if (changes.isEmpty()) {
+            logger.warn("Diff parser returned no changes despite non-empty diff output");
+        }
+
+        return changes;
+    }
+
+    /**
+     * Retrieves the staged changes and formats them for LLM consumption.
+     * This method provides a clear, structured format with size management
+     * and binary file handling.
+     *
+     * @return formatted diff string suitable for LLM processing
+     * @throws GitException if not in a Git repository or no staged changes exist
+     */
+    public String getFormattedStagedDiff() throws GitException {
+        List<DiffParser.FileChange> changes = getParsedStagedDiff();
+        return diffFormatter.format(changes);
+    }
+
+    /**
+     * Gets the diff parser instance used by this repository.
+     *
+     * @return the diff parser
+     */
+    public DiffParser getDiffParser() {
+        return diffParser;
+    }
+
+    /**
+     * Gets the diff formatter instance used by this repository.
+     *
+     * @return the diff formatter
+     */
+    public DiffFormatter getDiffFormatter() {
+        return diffFormatter;
+    }
+
+    /**
      * Executes a git commit with the provided message.
      *
      * @param message the commit message to use
@@ -177,6 +250,73 @@ public class GitRepository {
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             throw new GitException("Operation interrupted while creating commit", e);
+        }
+    }
+
+    /**
+     * Checks if this is an initial commit (no HEAD exists yet).
+     */
+    public boolean isInitialCommit() {
+        try {
+            Process process = new ProcessBuilder("git", "rev-parse", "HEAD")
+                .redirectErrorStream(true)
+                .start();
+            int exitCode = process.waitFor();
+            return exitCode != 0; // Non-zero means HEAD doesn't exist
+        } catch (Exception e) {
+            logger.debug("Error checking initial commit: {}", e.getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Checks if there are merge conflicts in the repository.
+     */
+    public boolean hasMergeConflicts() {
+        try {
+            Process process = new ProcessBuilder("git", "diff", "--name-only", "--diff-filter=U")
+                .start();
+            String output = new String(process.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
+            process.waitFor();
+            return !output.trim().isEmpty();
+        } catch (Exception e) {
+            logger.debug("Error checking merge conflicts: {}", e.getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Gets the list of files with merge conflicts.
+     */
+    public List<String> getConflictedFiles() {
+        try {
+            Process process = new ProcessBuilder("git", "diff", "--name-only", "--diff-filter=U")
+                .start();
+            String output = new String(process.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
+            process.waitFor();
+            if (output.trim().isEmpty()) {
+                return List.of();
+            }
+            return Arrays.asList(output.trim().split("\n"));
+        } catch (Exception e) {
+            logger.debug("Error getting conflicted files: {}", e.getMessage());
+            return List.of();
+        }
+    }
+
+    /**
+     * Checks if HEAD is detached (not on a branch).
+     */
+    public boolean isDetachedHead() {
+        try {
+            Process process = new ProcessBuilder("git", "symbolic-ref", "-q", "HEAD")
+                .redirectErrorStream(true)
+                .start();
+            int exitCode = process.waitFor();
+            return exitCode != 0; // Non-zero means detached HEAD
+        } catch (Exception e) {
+            logger.debug("Error checking detached HEAD: {}", e.getMessage());
+            return false;
         }
     }
 }

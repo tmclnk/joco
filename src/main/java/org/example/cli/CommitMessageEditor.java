@@ -3,6 +3,9 @@ package org.example.cli;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.charset.StandardCharsets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -114,38 +117,53 @@ public class CommitMessageEditor {
 
     /**
      * Allows the user to edit the commit message interactively.
+     * Launches the default editor (from EDITOR environment variable or fallback to nano/vim).
      *
      * @param originalMessage The original commit message
-     * @param reader BufferedReader for reading user input
+     * @param reader BufferedReader for reading user input (unused but kept for API compatibility)
      * @return The edited commit message, or null if editing was cancelled
      */
     private String editCommitMessage(String originalMessage, BufferedReader reader) {
         System.out.println("\n" + "=".repeat(60));
         System.out.println("Edit Commit Message");
         System.out.println("=".repeat(60));
-        System.out.println("Enter your commit message (end with Ctrl+D on a new line):");
-        System.out.println("Current message:");
-        System.out.println(originalMessage);
-        System.out.println("\nNew message:");
 
-        StringBuilder editedMessage = new StringBuilder();
-
+        Path tempFile = null;
         try {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                if (editedMessage.length() > 0) {
-                    editedMessage.append("\n");
-                }
-                editedMessage.append(line);
+            // Create a temporary file for editing
+            tempFile = Files.createTempFile("joco-commit-", ".txt");
+            logger.debug("Created temporary file: {}", tempFile);
+
+            // Write the original message to the temp file
+            Files.writeString(tempFile, originalMessage, StandardCharsets.UTF_8);
+            logger.debug("Wrote original message to temp file");
+
+            // Determine which editor to use
+            String editor = getEditor();
+            logger.info("Using editor: {}", editor);
+            System.out.println("Opening editor: " + editor);
+
+            // Launch the editor
+            ProcessBuilder pb = new ProcessBuilder(editor, tempFile.toString());
+            pb.inheritIO(); // Connect the editor to the current terminal
+            Process process = pb.start();
+
+            // Wait for the editor to close
+            int exitCode = process.waitFor();
+            logger.debug("Editor exited with code: {}", exitCode);
+
+            // Check the exit code
+            if (exitCode != 0) {
+                System.out.println("\nEditor exited with error code " + exitCode + ". Edit cancelled.");
+                logger.warn("Editor exited with non-zero code: {}", exitCode);
+                return null;
             }
 
-            // Reset the reader since we've hit EOF
-            // Note: In a real scenario, we'd need to handle this differently
-            // For now, we'll work with what we have
+            // Read the edited message back
+            String editedMessage = Files.readString(tempFile, StandardCharsets.UTF_8).trim();
+            logger.debug("Read edited message: {} characters", editedMessage.length());
 
-            String result = editedMessage.toString().trim();
-
-            if (result.isEmpty()) {
+            if (editedMessage.isEmpty()) {
                 System.out.println("\nEmpty message. Edit cancelled.");
                 logger.info("Edit cancelled - empty message");
                 return null;
@@ -153,14 +171,77 @@ public class CommitMessageEditor {
 
             logger.info("Message edited successfully");
             System.out.println("\nMessage updated.");
-            displayCommitMessage(result);
+            displayCommitMessage(editedMessage);
 
-            return result;
+            return editedMessage;
 
         } catch (IOException e) {
-            logger.error("Error reading edited message", e);
-            System.out.println("\nError reading input. Edit cancelled.");
+            logger.error("Error during file operations", e);
+            System.out.println("\nError accessing temporary file. Edit cancelled.");
             return null;
+        } catch (InterruptedException e) {
+            logger.error("Editor process was interrupted", e);
+            System.out.println("\nEditor process was interrupted. Edit cancelled.");
+            Thread.currentThread().interrupt(); // Restore interrupt status
+            return null;
+        } finally {
+            // Clean up the temporary file
+            if (tempFile != null) {
+                try {
+                    Files.deleteIfExists(tempFile);
+                    logger.debug("Deleted temporary file: {}", tempFile);
+                } catch (IOException e) {
+                    logger.warn("Failed to delete temporary file: {}", tempFile, e);
+                }
+            }
+        }
+    }
+
+    /**
+     * Determines which editor to use based on the EDITOR environment variable.
+     * Falls back to nano if available, then vim, then vi.
+     *
+     * @return The editor command to use
+     */
+    private String getEditor() {
+        // Check EDITOR environment variable first
+        String editor = System.getenv("EDITOR");
+        if (editor != null && !editor.trim().isEmpty()) {
+            logger.debug("Using EDITOR from environment: {}", editor);
+            return editor.trim();
+        }
+
+        // Try common editors in order of preference
+        String[] fallbackEditors = {"nano", "vim", "vi"};
+        for (String candidate : fallbackEditors) {
+            if (isCommandAvailable(candidate)) {
+                logger.debug("Using fallback editor: {}", candidate);
+                return candidate;
+            }
+        }
+
+        // Ultimate fallback (vi should be on all Unix systems)
+        logger.warn("No preferred editor found, using vi as last resort");
+        return "vi";
+    }
+
+    /**
+     * Checks if a command is available on the system PATH.
+     *
+     * @param command The command to check
+     * @return true if the command is available, false otherwise
+     */
+    private boolean isCommandAvailable(String command) {
+        try {
+            ProcessBuilder pb = new ProcessBuilder("which", command);
+            Process process = pb.start();
+            int exitCode = process.waitFor();
+            boolean available = (exitCode == 0);
+            logger.debug("Command '{}' available: {}", command, available);
+            return available;
+        } catch (IOException | InterruptedException e) {
+            logger.debug("Error checking command availability for '{}': {}", command, e.getMessage());
+            return false;
         }
     }
 }

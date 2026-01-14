@@ -103,6 +103,17 @@ public class Config {
         return temperature;
     }
 
+    /**
+     * Creates a new Config with the specified model, keeping other settings.
+     *
+     * @param newModel the new model identifier
+     * @return a new Config instance with the updated model
+     * @throws IllegalArgumentException if the new model is invalid
+     */
+    public Config withModel(String newModel) {
+        return new Config(newModel, this.maxTokens, this.temperature);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
