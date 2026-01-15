@@ -146,11 +146,39 @@ The small model doesn't reliably follow instructions. Outputs include:
 
 ---
 
+## Model Comparison Experiments
+
+### Experiment 4: Alternative Small Models
+
+**Date**: 2026-01-15
+**Hypothesis**: Different base models may have better instruction-following
+**Config**: Same prompt (file-pattern-v1), same test cases, different models
+
+| Model | Size | Format | Type Acc | Score | Notes |
+|-------|------|--------|----------|-------|-------|
+| qwen2.5-coder:1.5b | 986MB | 50% | 20% | 60 | Baseline |
+| **llama3.2:1b** | 1.3GB | **60%** | **50%** | 59.5 | Best small model |
+| gemma:2b | 1.7GB | 0% | 0% | 22 | All explanations |
+
+**Findings**:
+- **llama3.2:1b is the best small model** - 60% format compliance, 50% type accuracy
+- gemma:2b is terrible for this task - outputs only explanations
+- llama3.2 never adds scopes (0% scope inclusion) but gets types right more often
+- Model architecture matters more than parameter count
+
+**Run IDs**:
+- llama3.2:1b: run-1768518485234
+- gemma:2b: run-1768518554288
+
+---
+
 ## Future Experiments to Try
 
 - [ ] Lower temperature (0.3-0.5) for more deterministic output
 - [ ] Larger model (qwen2.5-coder:3b or 7b)
 - [ ] System prompt vs user prompt separation
 - [ ] JSON mode / structured output
+- [x] Different base models (llama3.2, gemma) - llama3.2:1b wins
 - [ ] Finetuned model on curated dataset
-- [ ] Different base models (DeepSeek-Coder, CodeLlama)
+- [ ] Distillation from Claude outputs
+- [ ] Train larger model, quantize down
