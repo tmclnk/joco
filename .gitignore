@@ -40,3 +40,4 @@ build/
 
 ### Claude ###
 .claude/settings.local.json
+dependency-reduced-pom.xml
