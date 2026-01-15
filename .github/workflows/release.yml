@@ -13,7 +13,7 @@ on:
 
 env:
   JAVA_VERSION: '21'
-  GRAALVM_DISTRIBUTION: 'graalce'
+  GRAALVM_DISTRIBUTION: 'graalvm-community'
 
 jobs:
   # Build the platform-independent fat JAR
