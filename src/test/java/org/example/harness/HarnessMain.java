@@ -99,6 +99,7 @@ public class HarnessMain {
         String templateId = "baseline-v1";
         String model = "qwen2.5-coder:1.5b";
         int maxTests = 0;
+        double temperature = 0.7;
         Path casesFile = Path.of("test-cases/angular-commits.jsonl");
         String runId = null;
 
@@ -113,6 +114,8 @@ public class HarnessMain {
                 casesFile = Path.of(args[i].substring(8));
             } else if (args[i].startsWith("--run-id=")) {
                 runId = args[i].substring(9);
+            } else if (args[i].startsWith("--temp=")) {
+                temperature = Double.parseDouble(args[i].substring(7));
             }
         }
 
@@ -128,7 +131,7 @@ public class HarnessMain {
         TestRunConfig config = new TestRunConfig(
             runId,
             model,
-            0.7,
+            temperature,
             100,
             templateId,
             casesFile,
@@ -139,6 +142,7 @@ public class HarnessMain {
         System.out.println("Run ID: " + config.runId());
         System.out.println("Template: " + config.promptTemplateId());
         System.out.println("Model: " + config.model());
+        System.out.println("Temperature: " + config.temperature());
         System.out.println("Test cases: " + config.testCasesFile());
         System.out.println("Max tests: " + (config.maxTestCases() > 0 ? config.maxTestCases() : "all"));
         System.out.println();
