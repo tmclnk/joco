@@ -58,15 +58,46 @@ ollama pull tinyllama:1.1b
 
 ### Prerequisites
 
-1. Install Ollama from [ollama.ai](https://ollama.ai)
-2. Pull your chosen model (see recommendations above)
-3. Ensure Java 17+ is installed
+1. **Ollama** - Install from [ollama.ai](https://ollama.ai), then pull your chosen model (see recommendations above)
+2. **Java 21+** - Required for building. Recommended: use [SDKMAN](https://sdkman.io) for version management
+3. **GraalVM 21** (optional) - Required only for native executable builds
 
-### Build
+#### Installing Java with SDKMAN
 
 ```bash
-mvn clean package
+# Install SDKMAN
+curl -s "https://get.sdkman.io" | bash
+source "$HOME/.sdkman/bin/sdkman-init.sh"
+
+# Install Java 21 (standard JDK for JAR builds)
+sdk install java 21.0.5-tem
+
+# Or install GraalVM 21 (for native builds)
+sdk install java 21.0.2-graalce
+sdk use java 21.0.2-graalce
 ```
+
+### Build (JAR)
+
+```bash
+./mvnw clean package
+```
+
+Output: `target/joco.jar` - run with `java -jar target/joco.jar`
+
+### Build (Native Executable)
+
+Requires GraalVM with native-image:
+
+```bash
+# Ensure GraalVM is active
+sdk use java 21.0.2-graalce
+
+# Build native executable
+./mvnw package -Pnative
+```
+
+Output: `target/joco` - a standalone native binary with ~50ms startup time
 
 ## Usage
 
