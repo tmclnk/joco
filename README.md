@@ -4,23 +4,27 @@ A lightweight clone of opencommit that generates meaningful commit messages usin
 
 ## Recommended Ollama Models
 
-joco works best with lightweight, efficient models that provide fast inference. Here are the recommended options based on 2026 benchmarks:
+joco works with lightweight, efficient models that provide fast inference. Here are the recommended options based on 2026 benchmarks:
 
 ### Primary Recommendation: Qwen2.5-Coder
 
 **qwen2.5-coder:0.5b** (Ultra-lightweight)
+
 ```bash
 ollama pull qwen2.5-coder:0.5b
 ```
+
 - Size: ~398MB
 - Lightning fast on any hardware
 - Surprisingly capable for commit messages
 - Perfect if you want minimal resource usage
 
 **qwen2.5-coder:1.5b** (Best overall choice)
+
 ```bash
 ollama pull qwen2.5-coder:1.5b
 ```
+
 - Size: ~986MB
 - Specifically trained for code understanding and generation
 - Very fast inference with minimal memory footprint
@@ -28,9 +32,11 @@ ollama pull qwen2.5-coder:1.5b
 - Most popular choice for lightweight coding assistants
 
 **qwen2.5-coder:3b** (Higher quality)
+
 ```bash
 ollama pull qwen2.5-coder:3b
 ```
+
 - Size: ~1.9GB
 - Better quality than 1.5b while still being lightweight
 - Fast inference with modest memory requirements
@@ -39,17 +45,21 @@ ollama pull qwen2.5-coder:3b
 ### Alternatives
 
 **deepseek-coder:1.3b**
+
 ```bash
 ollama pull deepseek-coder:1.3b
 ```
+
 - Size: ~775MB
 - Alternative lightweight code model
 - Good code intelligence with minimal resources
 
 **tinyllama:1.1b**
+
 ```bash
 ollama pull tinyllama:1.1b
 ```
+
 - Size: ~638MB
 - Ultra-lightweight general-purpose model
 - Works on extremely constrained hardware
