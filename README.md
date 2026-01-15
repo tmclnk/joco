@@ -148,6 +148,10 @@ Create `.joco.config` in your home directory:
 }
 ```
 
+## Acknowledgments
+
+joco is inspired by [OpenCommit](https://github.com/di-sukharev/opencommit). Thanks to [@di-sukharev](https://github.com/di-sukharev) and the OpenCommit contributors for creating such a useful tool!
+
 ## License
 
 MIT
