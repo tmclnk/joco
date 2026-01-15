@@ -15,7 +15,7 @@ public class BasePromptTemplate implements PromptTemplate {
 
     @Override
     public String getDescription() {
-        return "Current joco production prompt - CommitMessagePrompt.createCompletePrompt()";
+        return "Current joco production prompt (strict-format) - CommitMessagePrompt.createCompletePrompt()";
     }
 
     @Override

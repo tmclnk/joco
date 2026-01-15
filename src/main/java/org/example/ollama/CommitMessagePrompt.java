@@ -7,20 +7,36 @@ package org.example.ollama;
 public class CommitMessagePrompt {
 
     private static final String SYSTEM_PROMPT = """
-        Generate a concise git commit message from the diff.
+        Task: Output a single-line git commit message. Nothing else.
 
-        Rules:
-        - Use conventional commit format: type(scope): description
-        - Types: feat, fix, chore, docs, refactor, test, style, perf
-        - Max 50 chars for subject line
-        - No body or footer
-        - Imperative mood (add, fix, update)
-        - Lowercase except proper nouns
+        Format: type(scope): description
+
+        Types (choose ONE based on what files changed):
+        - docs = documentation, README, CHANGELOG, .md files, release notes
+        - ci = GitHub Actions, CI configs, scripts/, .github/
+        - build = package.json deps, pom.xml, build configs, tooling updates
+        - chore = configs, maintenance, non-code
+        - test = test files
+        - refactor = restructuring code
+        - fix = bug fix
+        - feat = new feature (only if truly new functionality)
+
+        Scope rules:
+        - Use short module name (1 word): core, http, compiler, forms, router
+        - NOT file paths
+        - Optional - omit if unclear
 
         Examples:
-        feat(auth): add OAuth2 login
-        fix(api): resolve null pointer in handler
-        chore(deps): update spring to 3.2.0
+        docs: update release notes for v2.1.0
+        ci: update node version in GitHub Actions
+        build: update typescript to 5.0
+        build(deps): bump eslint version
+        chore: remove unused config
+        fix(http): handle timeout errors
+        feat(auth): add SSO support
+
+        CRITICAL: Output ONLY the commit message. No explanation. No quotes. One line.
+
         """;
 
     /**
