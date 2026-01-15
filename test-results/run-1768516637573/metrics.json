@@ -1,0 +1,34 @@
+{
+  "totalTests": 10,
+  "successfulGenerations": 10,
+  "failedGenerations": 0,
+  "conventionalCommitRate": 0.1,
+  "scopeInclusionRate": 0.0,
+  "lengthComplianceRate": 1.0,
+  "recommendedLengthRate": 0.5,
+  "typeDistribution": {
+    "docs": 1
+  },
+  "averageSubjectLength": 42.9,
+  "averageScore": 30.0,
+  "successRate": 1.0,
+  "averageGenerationTimeMs": 8383.0,
+  "totalPromptTokens": 25488,
+  "totalCompletionTokens": 724,
+  "averagePromptTokens": 2548.8,
+  "averageCompletionTokens": 72.4,
+  "componentMetrics": {
+    "typeAccuracyRate": 0.0,
+    "typeMatchCount": 0,
+    "typeComparisonCount": 1,
+    "scopeMatchRate": 0.0,
+    "scopeMatchCount": 0,
+    "scopeComparisonCount": 1,
+    "scopePresenceMatchRate": 0.0,
+    "scopePresenceMatchCount": 0,
+    "averageDescriptionSimilarity": 0.1880952380952381,
+    "minDescriptionSimilarity": 0.1880952380952381,
+    "maxDescriptionSimilarity": 0.1880952380952381,
+    "validComparisonCount": 1
+  }
+}
