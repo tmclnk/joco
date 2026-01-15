@@ -30,7 +30,10 @@ public record EvaluationMetrics(
     int totalPromptTokens,
     int totalCompletionTokens,
     double averagePromptTokens,
-    double averageCompletionTokens
+    double averageCompletionTokens,
+
+    // Component-level metrics
+    ComponentMetrics componentMetrics
 ) {
     /**
      * Returns a formatted summary string.
@@ -63,6 +66,11 @@ public record EvaluationMetrics(
         sb.append(String.format("  Avg Generation Time: %.0f ms%n", averageGenerationTimeMs));
         sb.append(String.format("  Avg Prompt Tokens: %.0f%n", averagePromptTokens));
         sb.append(String.format("  Avg Completion Tokens: %.0f%n", averageCompletionTokens));
+        sb.append("\n");
+
+        if (componentMetrics != null) {
+            sb.append(componentMetrics.toSummary());
+        }
 
         return sb.toString();
     }

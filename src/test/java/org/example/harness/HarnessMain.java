@@ -7,6 +7,9 @@ import org.example.harness.evaluation.EvaluationMetrics;
 import org.example.harness.evaluation.EvaluationResult;
 import org.example.harness.evaluation.MetricsCalculator;
 import org.example.harness.evaluation.StructuralValidator;
+import org.example.harness.generator.ClaudeCodeGenerator;
+import org.example.harness.generator.CommitGenerator;
+import org.example.harness.generator.OllamaGenerator;
 import org.example.harness.output.ClaudeExporter;
 import org.example.harness.output.ComparisonReport;
 import org.example.harness.output.ResultStore;
@@ -114,6 +117,7 @@ public class HarnessMain {
         double temperature = 0.7;
         Path casesFile = Path.of("test-cases/angular-commits.jsonl");
         String runId = null;
+        String backend = "ollama";
 
         for (int i = 1; i < args.length; i++) {
             if (args[i].startsWith("--template=")) {
@@ -128,14 +132,22 @@ public class HarnessMain {
                 runId = args[i].substring(9);
             } else if (args[i].startsWith("--temp=")) {
                 temperature = Double.parseDouble(args[i].substring(7));
+            } else if (args[i].startsWith("--backend=")) {
+                backend = args[i].substring(10);
             }
         }
 
-        // Check Ollama availability
-        OllamaClient client = new OllamaClient();
-        if (!client.isAvailable()) {
-            System.err.println("Error: Ollama is not running.");
-            System.err.println("Start with: ollama serve");
+        // Create the generator based on backend selection
+        CommitGenerator generator = createGenerator(backend);
+
+        // Check generator availability
+        if (!generator.isAvailable()) {
+            System.err.println("Error: " + generator.getBackendName() + " backend is not available.");
+            if (backend.equals("ollama")) {
+                System.err.println("Start Ollama with: ollama serve");
+            } else if (backend.equals("claude")) {
+                System.err.println("Make sure the Claude CLI is installed and accessible.");
+            }
             System.exit(1);
         }
 
@@ -152,6 +164,7 @@ public class HarnessMain {
 
         System.out.println("=== Test Run Configuration ===");
         System.out.println("Run ID: " + config.runId());
+        System.out.println("Backend: " + generator.getBackendName());
         System.out.println("Template: " + config.promptTemplateId());
         System.out.println("Model: " + config.model());
         System.out.println("Temperature: " + config.temperature());
@@ -160,7 +173,7 @@ public class HarnessMain {
         System.out.println();
 
         // Run tests
-        TestRunner runner = new TestRunner(client);
+        TestRunner runner = new TestRunner(generator);
         List<TestResult> results = runner.runTests(config);
 
         // Evaluate results
@@ -240,6 +253,22 @@ public class HarnessMain {
         }
     }
 
+    /**
+     * Creates a CommitGenerator based on the backend name.
+     *
+     * @param backend The backend name ("ollama" or "claude")
+     * @return The appropriate CommitGenerator implementation
+     */
+    private static CommitGenerator createGenerator(String backend) {
+        return switch (backend.toLowerCase()) {
+            case "ollama" -> new OllamaGenerator();
+            case "claude", "claude-code" -> new ClaudeCodeGenerator();
+            default -> throw new IllegalArgumentException(
+                "Unknown backend: " + backend + ". Supported backends: ollama, claude"
+            );
+        };
+    }
+
     private static void printUsage() {
         System.out.println("""
             Joco Prompt Test Harness
@@ -257,10 +286,12 @@ public class HarnessMain {
                   Run tests with a prompt template.
                   Options:
                     --template=ID   Prompt template ID (default: baseline-v1)
-                    --model=MODEL   Ollama model (default: qwen2.5-coder:1.5b)
+                    --model=MODEL   Model to use (default: qwen2.5-coder:1.5b)
                     --max=N         Limit test cases (default: all)
                     --cases=FILE    Test cases file (default: test-cases/angular-commits.jsonl)
                     --run-id=ID     Custom run ID (default: timestamp)
+                    --temp=FLOAT    Temperature for generation (default: 0.7)
+                    --backend=NAME  Backend to use: ollama or claude (default: ollama)
 
               harness compare <run1> <run2>
                   Compare metrics between two test runs.
@@ -271,12 +302,19 @@ public class HarnessMain {
               harness runs
                   List previous test runs.
 
+            Backends:
+              ollama          Use local Ollama server (requires: ollama serve)
+              claude          Use Claude Code CLI (requires: claude CLI installed)
+
             Examples:
               # Extract test cases from Angular
               harness extract /tmp/angular test-cases/angular-commits.jsonl --max=100
 
-              # Run tests with baseline prompt
+              # Run tests with baseline prompt using Ollama
               harness run
+
+              # Run tests with Claude Code CLI
+              harness run --backend=claude --max=20
 
               # Run tests with few-shot prompt
               harness run --template=few-shot-v1 --max=20

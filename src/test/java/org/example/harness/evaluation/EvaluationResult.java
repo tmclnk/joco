@@ -9,18 +9,31 @@ public record EvaluationResult(
     TestResult testResult,
     StructuralValidator.ValidationResult validation,
     boolean typeMatches,
-    boolean scopeMatches
+    boolean scopeMatches,
+    ComponentComparisonResult componentComparison
 ) {
     /**
      * Creates an evaluation result from a test result.
      */
     public static EvaluationResult evaluate(TestResult testResult, StructuralValidator validator) {
+        return evaluate(testResult, validator, new CommitComponentEvaluator());
+    }
+
+    /**
+     * Creates an evaluation result from a test result with a custom component evaluator.
+     */
+    public static EvaluationResult evaluate(
+            TestResult testResult,
+            StructuralValidator validator,
+            CommitComponentEvaluator componentEvaluator) {
+
         if (!testResult.success() || testResult.generatedMessage() == null) {
             return new EvaluationResult(
                 testResult,
                 validator.validate(""),
                 false,
-                false
+                false,
+                componentEvaluator.compare(testResult.expectedMessage(), "")
             );
         }
 
@@ -37,6 +50,10 @@ public record EvaluationResult(
         boolean scopeMatches = validation.scope() != null &&
             validation.scope().equals(expectedValidation.scope());
 
-        return new EvaluationResult(testResult, validation, typeMatches, scopeMatches);
+        // Perform component-level comparison
+        ComponentComparisonResult componentComparison =
+            componentEvaluator.compare(testResult.expectedMessage(), testResult.generatedMessage());
+
+        return new EvaluationResult(testResult, validation, typeMatches, scopeMatches, componentComparison);
     }
 }

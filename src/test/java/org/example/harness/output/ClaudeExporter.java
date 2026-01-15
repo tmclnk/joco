@@ -1,5 +1,7 @@
 package org.example.harness.output;
 
+import org.example.harness.evaluation.ComponentComparisonResult;
+import org.example.harness.evaluation.ComponentMetrics;
 import org.example.harness.evaluation.EvaluationMetrics;
 import org.example.harness.evaluation.EvaluationResult;
 import org.example.harness.runner.TestResult;
@@ -48,6 +50,25 @@ public class ClaudeExporter {
             md.append("|------|-------|\n");
             metrics.typeDistribution().forEach((type, count) ->
                 md.append(String.format("| %s | %d |%n", type, count)));
+            md.append("\n");
+        }
+
+        // Component metrics
+        ComponentMetrics cm = metrics.componentMetrics();
+        if (cm != null && cm.validComparisonCount() > 0) {
+            md.append("## Component Accuracy\n\n");
+            md.append("| Metric | Value |\n");
+            md.append("|--------|-------|\n");
+            md.append(String.format("| Type Accuracy | %.1f%% (%d/%d) |%n",
+                cm.typeAccuracyRate() * 100, cm.typeMatchCount(), cm.typeComparisonCount()));
+            md.append(String.format("| Scope Match (when expected) | %.1f%% (%d/%d) |%n",
+                cm.scopeMatchRate() * 100, cm.scopeMatchCount(), cm.scopeComparisonCount()));
+            md.append(String.format("| Scope Presence Match | %.1f%% |%n",
+                cm.scopePresenceMatchRate() * 100));
+            md.append(String.format("| Avg Description Similarity | %.2f |%n",
+                cm.averageDescriptionSimilarity()));
+            md.append(String.format("| Description Similarity Range | %.2f - %.2f |%n",
+                cm.minDescriptionSimilarity(), cm.maxDescriptionSimilarity()));
             md.append("\n");
         }
 
@@ -107,16 +128,42 @@ public class ClaudeExporter {
         md.append(String.format("**Expected:** `%s`%n%n", tr.expectedMessage()));
         md.append(String.format("**Generated:** `%s`%n%n", tr.generatedMessage()));
 
-        if (r.typeMatches()) {
-            md.append("- Type: MATCH\n");
-        } else {
-            md.append(String.format("- Type: expected=%s, got=%s%n",
-                getExpectedType(tr.expectedMessage()),
-                r.validation().type()));
-        }
+        // Component comparison details
+        ComponentComparisonResult cc = r.componentComparison();
+        if (cc != null && cc.bothValid()) {
+            if (cc.typeMatches()) {
+                md.append(String.format("- Type: MATCH (%s)%n", cc.expected().type()));
+            } else {
+                md.append(String.format("- Type: expected=%s, got=%s%n",
+                    cc.expected().type(), cc.generated().type()));
+            }
 
-        if (r.scopeMatches()) {
-            md.append("- Scope: MATCH\n");
+            if (cc.expectedHasScope()) {
+                if (cc.scopeMatches()) {
+                    md.append(String.format("- Scope: MATCH (%s)%n", cc.expected().scope()));
+                } else {
+                    md.append(String.format("- Scope: expected=%s, got=%s%n",
+                        cc.expected().scope(),
+                        cc.generated().hasScope() ? cc.generated().scope() : "none"));
+                }
+            } else if (cc.generated().hasScope()) {
+                md.append(String.format("- Scope: generated=%s (none expected)%n", cc.generated().scope()));
+            }
+
+            md.append(String.format("- Description Similarity: %.2f%n", cc.descriptionSimilarity()));
+        } else {
+            // Fallback to old behavior if component comparison not available
+            if (r.typeMatches()) {
+                md.append("- Type: MATCH\n");
+            } else {
+                md.append(String.format("- Type: expected=%s, got=%s%n",
+                    getExpectedType(tr.expectedMessage()),
+                    r.validation().type()));
+            }
+
+            if (r.scopeMatches()) {
+                md.append("- Scope: MATCH\n");
+            }
         }
 
         md.append(String.format("- Score: %d/100%n", r.validation().score()));
