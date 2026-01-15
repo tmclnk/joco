@@ -1,0 +1,20 @@
+{
+  "totalSourceRecords": 404,
+  "filteredRecords": 47,
+  "trainRecords": 42,
+  "validationRecords": 5,
+  "typeDistribution": {
+    "build": 11,
+    "ci": 1,
+    "docs": 17,
+    "feat": 3,
+    "fix": 2,
+    "refactor": 12,
+    "test": 1
+  },
+  "sourceDistribution": {
+    "angular": 47
+  },
+  "avgDiffLength": 2444,
+  "avgOutputLength": 53
+}
