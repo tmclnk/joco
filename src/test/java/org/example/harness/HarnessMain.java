@@ -63,7 +63,7 @@ public class HarnessMain {
 
     private static void runExtract(String[] args) throws Exception {
         if (args.length < 3) {
-            System.err.println("Usage: harness extract <repo-path> <output.jsonl> [--max=N] [--name=repo-name]");
+            System.err.println("Usage: harness extract <repo-path> <output.jsonl> [--max=N] [--name=repo-name] [--no-filter] [--author=PATTERN]");
             System.exit(1);
         }
 
@@ -72,20 +72,32 @@ public class HarnessMain {
 
         int maxCommits = 50;
         String repoName = repoPath.getFileName().toString();
+        boolean filterConventional = true;
+        String authorFilter = null;
 
         for (int i = 3; i < args.length; i++) {
             if (args[i].startsWith("--max=")) {
                 maxCommits = Integer.parseInt(args[i].substring(6));
             } else if (args[i].startsWith("--name=")) {
                 repoName = args[i].substring(7);
+            } else if (args[i].equals("--no-filter")) {
+                filterConventional = false;
+            } else if (args[i].startsWith("--author=")) {
+                authorFilter = args[i].substring(9);
             }
         }
 
         System.out.println("Extracting test cases from: " + repoPath);
         System.out.println("Repository name: " + repoName);
         System.out.println("Max commits: " + maxCommits);
+        System.out.println("Filter conventional: " + filterConventional);
+        if (authorFilter != null) {
+            System.out.println("Author filter: " + authorFilter);
+        }
 
-        TestCaseExtractor extractor = new TestCaseExtractor(repoPath, repoName);
+        TestCaseExtractor extractor = new TestCaseExtractor(repoPath, repoName)
+            .setFilterConventional(filterConventional)
+            .setAuthorFilter(authorFilter);
         List<TestCase> testCases = extractor.extract(maxCommits, 50000); // 50k char max diff
 
         TestCaseLoader loader = new TestCaseLoader();
@@ -236,8 +248,10 @@ public class HarnessMain {
               harness extract <repo-path> <output.jsonl> [options]
                   Extract test cases from a git repository.
                   Options:
-                    --max=N       Maximum commits to extract (default: 50)
-                    --name=NAME   Repository name (default: directory name)
+                    --max=N         Maximum commits to extract (default: 50)
+                    --name=NAME     Repository name (default: directory name)
+                    --no-filter     Accept all commits, not just conventional format
+                    --author=PATTERN  Filter commits by author name/email pattern
 
               harness run [options]
                   Run tests with a prompt template.
