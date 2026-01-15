@@ -103,6 +103,25 @@
     </build>
 
     <profiles>
+        <!-- Harness Profile: Run the prompt test harness -->
+        <!-- Usage: ./mvnw exec:java -Pharness -Dexec.args="run" -->
+        <profile>
+            <id>harness</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>3.2.0</version>
+                        <configuration>
+                            <mainClass>org.example.harness.HarnessMain</mainClass>
+                            <classpathScope>test</classpathScope>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
         <!-- Native Image Profile: Build native executable using GraalVM -->
         <!-- Usage: ./mvnw package -Pnative -->
         <profile>

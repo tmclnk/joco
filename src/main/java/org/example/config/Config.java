@@ -9,7 +9,7 @@ import java.util.Objects;
 public class Config {
     private static final String DEFAULT_MODEL = "qwen2.5-coder:1.5b";
     private static final int DEFAULT_MAX_TOKENS = 100;
-    private static final double DEFAULT_TEMPERATURE = 0.7;
+    private static final double DEFAULT_TEMPERATURE = 0.3;
 
     private final String model;
     private final int maxTokens;
