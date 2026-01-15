@@ -1,0 +1,177 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version (e.g., 1.0.0)'
+        required: true
+        type: string
+
+env:
+  JAVA_VERSION: '21'
+  GRAALVM_DISTRIBUTION: 'graalce'
+
+jobs:
+  # Build the platform-independent fat JAR
+  build-jar:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Determine version
+        id: version
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            VERSION="${{ github.event.inputs.version }}"
+          else
+            VERSION="${GITHUB_REF#refs/tags/v}"
+          fi
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Building version: $VERSION"
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Build fat JAR
+        run: ./mvnw clean package -DskipTests
+
+      - name: Upload JAR artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: joco-jar
+          path: target/joco.jar
+          retention-days: 1
+
+  # Build native binary for Linux x64
+  build-native-linux:
+    runs-on: ubuntu-latest
+    needs: build-jar
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up GraalVM
+        uses: graalvm/setup-graalvm@v1
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: ${{ env.GRAALVM_DISTRIBUTION }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build native image
+        run: ./mvnw package -Pnative -DskipTests
+
+      - name: Rename binary
+        run: mv target/joco target/joco-linux-x64
+
+      - name: Upload native artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: joco-linux-x64
+          path: target/joco-linux-x64
+          retention-days: 1
+
+  # Build native binary for macOS ARM64
+  build-native-macos:
+    runs-on: macos-14
+    needs: build-jar
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up GraalVM
+        uses: graalvm/setup-graalvm@v1
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: ${{ env.GRAALVM_DISTRIBUTION }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build native image
+        run: ./mvnw package -Pnative -DskipTests
+
+      - name: Rename binary
+        run: mv target/joco target/joco-macos-arm64
+
+      - name: Upload native artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: joco-macos-arm64
+          path: target/joco-macos-arm64
+          retention-days: 1
+
+  # Build native binary for Windows x64
+  build-native-windows:
+    runs-on: windows-latest
+    needs: build-jar
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up GraalVM
+        uses: graalvm/setup-graalvm@v1
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: ${{ env.GRAALVM_DISTRIBUTION }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build native image
+        run: ./mvnw.cmd package -Pnative -DskipTests
+
+      - name: Rename binary
+        run: mv target/joco.exe target/joco-windows-x64.exe
+
+      - name: Upload native artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: joco-windows-x64
+          path: target/joco-windows-x64.exe
+          retention-days: 1
+
+  # Create GitHub Release with all artifacts
+  release:
+    runs-on: ubuntu-latest
+    needs: [build-jar, build-native-linux, build-native-macos, build-native-windows]
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Prepare release assets
+        run: |
+          mkdir -p release-assets
+          cp artifacts/joco-jar/joco.jar release-assets/
+          cp artifacts/joco-linux-x64/joco-linux-x64 release-assets/
+          cp artifacts/joco-macos-arm64/joco-macos-arm64 release-assets/
+          cp artifacts/joco-windows-x64/joco-windows-x64.exe release-assets/
+          chmod +x release-assets/joco-linux-x64
+          chmod +x release-assets/joco-macos-arm64
+          ls -la release-assets/
+
+      - name: Create Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ needs.build-jar.outputs.version }}
+        run: |
+          gh release create "v${VERSION}" \
+            --title "joco v${VERSION}" \
+            --generate-notes \
+            release-assets/joco.jar \
+            release-assets/joco-linux-x64 \
+            release-assets/joco-macos-arm64 \
+            release-assets/joco-windows-x64.exe
