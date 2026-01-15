@@ -1,3 +1,5 @@
+[![CI](https://github.com/tmclnk/joco/actions/workflows/ci.yml/badge.svg)](https://github.com/tmclnk/joco/actions/workflows/ci.yml)
+
 # joco
 
 A lightweight clone of opencommit that generates meaningful commit messages using Ollama local LLMs.
