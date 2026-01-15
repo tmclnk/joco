@@ -2,6 +2,8 @@ package org.example.harness.prompt;
 
 import org.example.harness.prompt.templates.FewShotTemplate;
 import org.example.harness.prompt.templates.MinimalTemplate;
+import org.example.harness.prompt.templates.StrictFormatTemplate;
+import org.example.harness.prompt.templates.TypeAccuracyTemplate;
 import org.example.harness.prompt.templates.VerboseTemplate;
 
 import java.util.Collection;
@@ -21,6 +23,8 @@ public class PromptTemplateRegistry {
         register(new FewShotTemplate());
         register(new MinimalTemplate());
         register(new VerboseTemplate());
+        register(new TypeAccuracyTemplate());
+        register(new StrictFormatTemplate());
     }
 
     /**
