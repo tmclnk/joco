@@ -65,3 +65,49 @@ bd list                                       # View issues
 bd update <id> --status=in_progress           # Claim work
 bd close <id>                                 # Complete work
 ```
+
+## Release Process
+
+joco uses GitHub Actions for automated releases. The workflow builds:
+- **joco.jar** - Fat JAR (requires Java 21+)
+- **joco-linux-x64** - Native binary for Linux
+- **joco-macos-arm64** - Native binary for macOS (Apple Silicon)
+- **joco-windows-x64.exe** - Native binary for Windows
+
+### Creating a Release
+
+1. Ensure all changes are merged to `main`
+2. Create and push a version tag:
+   ```bash
+   git tag v1.0.0
+   git push origin v1.0.0
+   ```
+3. GitHub Actions automatically:
+   - Builds the fat JAR
+   - Builds native binaries for all platforms
+   - Creates a GitHub Release with all artifacts
+
+### Manual Release (Emergency)
+
+For emergency releases without a tag:
+1. Go to Actions > Release workflow
+2. Click "Run workflow"
+3. Enter the version number (e.g., `1.0.1`)
+4. Click "Run workflow"
+
+### Version Numbering
+
+Follow semantic versioning (semver):
+- **MAJOR.MINOR.PATCH** (e.g., `1.2.3`)
+- Increment MAJOR for breaking changes
+- Increment MINOR for new features
+- Increment PATCH for bug fixes
+
+### Supported Platforms
+
+| Platform | Architecture | Artifact |
+|----------|--------------|----------|
+| Linux | x64 | joco-linux-x64 |
+| macOS | ARM64 (Apple Silicon) | joco-macos-arm64 |
+| Windows | x64 | joco-windows-x64.exe |
+| Any (with Java 21+) | Any | joco.jar |
