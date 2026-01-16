@@ -3,6 +3,7 @@ package org.example.harness.prompt;
 import org.example.harness.prompt.templates.FewShotTemplate;
 import org.example.harness.prompt.templates.FilePatternTemplate;
 import org.example.harness.prompt.templates.MinimalTemplate;
+import org.example.harness.prompt.templates.RawDiffTemplate;
 import org.example.harness.prompt.templates.StrictFormatTemplate;
 import org.example.harness.prompt.templates.TypeAccuracyTemplate;
 import org.example.harness.prompt.templates.VerboseTemplate;
@@ -27,6 +28,7 @@ public class PromptTemplateRegistry {
         register(new TypeAccuracyTemplate());
         register(new StrictFormatTemplate());
         register(new FilePatternTemplate());
+        register(new RawDiffTemplate());
     }
 
     /**

@@ -37,9 +37,6 @@ public class MetricsCalculator {
         // Component metrics tracking
         int typeMatchCount = 0;
         int typeComparisonCount = 0;
-        int scopeMatchCount = 0;
-        int scopeComparisonCount = 0; // Only when expected has scope
-        int scopePresenceMatchCount = 0;
         int validComparisonCount = 0;
         double totalDescriptionSimilarity = 0.0;
         double minDescriptionSimilarity = Double.MAX_VALUE;
@@ -88,19 +85,6 @@ public class MetricsCalculator {
                     typeMatchCount++;
                 }
 
-                // Scope match (only when expected has scope)
-                if (cc.expectedHasScope()) {
-                    scopeComparisonCount++;
-                    if (cc.scopeMatches()) {
-                        scopeMatchCount++;
-                    }
-                }
-
-                // Scope presence match
-                if (cc.scopePresenceMatches()) {
-                    scopePresenceMatchCount++;
-                }
-
                 // Description similarity
                 double descSim = cc.descriptionSimilarity();
                 totalDescriptionSimilarity += descSim;
@@ -122,8 +106,7 @@ public class MetricsCalculator {
         // Compute component metrics
         ComponentMetrics componentMetrics = computeComponentMetrics(
             typeMatchCount, typeComparisonCount,
-            scopeMatchCount, scopeComparisonCount,
-            scopePresenceMatchCount, validComparisonCount,
+            validComparisonCount,
             totalDescriptionSimilarity,
             minDescriptionSimilarity, maxDescriptionSimilarity
         );
@@ -154,8 +137,7 @@ public class MetricsCalculator {
      */
     private ComponentMetrics computeComponentMetrics(
             int typeMatchCount, int typeComparisonCount,
-            int scopeMatchCount, int scopeComparisonCount,
-            int scopePresenceMatchCount, int validComparisonCount,
+            int validComparisonCount,
             double totalDescriptionSimilarity,
             double minDescriptionSimilarity, double maxDescriptionSimilarity) {
 
@@ -165,12 +147,6 @@ public class MetricsCalculator {
 
         double typeAccuracyRate = typeComparisonCount > 0
             ? (double) typeMatchCount / typeComparisonCount : 0.0;
-
-        double scopeMatchRate = scopeComparisonCount > 0
-            ? (double) scopeMatchCount / scopeComparisonCount : 0.0;
-
-        double scopePresenceMatchRate = validComparisonCount > 0
-            ? (double) scopePresenceMatchCount / validComparisonCount : 0.0;
 
         double avgDescSimilarity = validComparisonCount > 0
             ? totalDescriptionSimilarity / validComparisonCount : 0.0;
@@ -185,8 +161,6 @@ public class MetricsCalculator {
 
         return new ComponentMetrics(
             typeAccuracyRate, typeMatchCount, typeComparisonCount,
-            scopeMatchRate, scopeMatchCount, scopeComparisonCount,
-            scopePresenceMatchRate, scopePresenceMatchCount,
             avgDescSimilarity, minDescriptionSimilarity, maxDescriptionSimilarity,
             validComparisonCount
         );

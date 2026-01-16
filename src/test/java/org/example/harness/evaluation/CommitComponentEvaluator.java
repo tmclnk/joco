@@ -10,8 +10,10 @@ import java.util.stream.Collectors;
  *
  * Provides separate evaluation for:
  * - Type accuracy (exact match)
- * - Scope presence and accuracy
  * - Description similarity (using multiple metrics)
+ *
+ * Note: Scope matching is intentionally excluded since we generate
+ * `type: description` format without scopes.
  */
 public class CommitComponentEvaluator {
 
@@ -27,16 +29,12 @@ public class CommitComponentEvaluator {
         CommitComponents generated = CommitComponents.parse(generatedMessage);
 
         boolean typeMatches = compareTypes(expected, generated);
-        boolean scopeMatches = compareScopes(expected, generated);
-        boolean scopePresenceMatches = compareScopePresence(expected, generated);
         double descriptionSimilarity = compareDescriptions(expected, generated);
 
         return new ComponentComparisonResult(
             expected,
             generated,
             typeMatches,
-            scopeMatches,
-            scopePresenceMatches,
             descriptionSimilarity
         );
     }
@@ -49,35 +47,6 @@ public class CommitComponentEvaluator {
             return false;
         }
         return expected.type() != null && expected.type().equals(generated.type());
-    }
-
-    /**
-     * Compares scopes for exact match.
-     */
-    private boolean compareScopes(CommitComponents expected, CommitComponents generated) {
-        if (!expected.valid() || !generated.valid()) {
-            return false;
-        }
-        // Both null or empty is a match
-        if (!expected.hasScope() && !generated.hasScope()) {
-            return true;
-        }
-        // One has scope, other doesn't
-        if (expected.hasScope() != generated.hasScope()) {
-            return false;
-        }
-        // Both have scopes - compare them
-        return expected.scope().equalsIgnoreCase(generated.scope());
-    }
-
-    /**
-     * Compares whether both messages have the same scope presence (both have or both don't).
-     */
-    private boolean compareScopePresence(CommitComponents expected, CommitComponents generated) {
-        if (!expected.valid() || !generated.valid()) {
-            return false;
-        }
-        return expected.hasScope() == generated.hasScope();
     }
 
     /**

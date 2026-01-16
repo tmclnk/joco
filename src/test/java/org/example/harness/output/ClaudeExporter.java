@@ -61,10 +61,6 @@ public class ClaudeExporter {
             md.append("|--------|-------|\n");
             md.append(String.format("| Type Accuracy | %.1f%% (%d/%d) |%n",
                 cm.typeAccuracyRate() * 100, cm.typeMatchCount(), cm.typeComparisonCount()));
-            md.append(String.format("| Scope Match (when expected) | %.1f%% (%d/%d) |%n",
-                cm.scopeMatchRate() * 100, cm.scopeMatchCount(), cm.scopeComparisonCount()));
-            md.append(String.format("| Scope Presence Match | %.1f%% |%n",
-                cm.scopePresenceMatchRate() * 100));
             md.append(String.format("| Avg Description Similarity | %.2f |%n",
                 cm.averageDescriptionSimilarity()));
             md.append(String.format("| Description Similarity Range | %.2f - %.2f |%n",
@@ -138,18 +134,6 @@ public class ClaudeExporter {
                     cc.expected().type(), cc.generated().type()));
             }
 
-            if (cc.expectedHasScope()) {
-                if (cc.scopeMatches()) {
-                    md.append(String.format("- Scope: MATCH (%s)%n", cc.expected().scope()));
-                } else {
-                    md.append(String.format("- Scope: expected=%s, got=%s%n",
-                        cc.expected().scope(),
-                        cc.generated().hasScope() ? cc.generated().scope() : "none"));
-                }
-            } else if (cc.generated().hasScope()) {
-                md.append(String.format("- Scope: generated=%s (none expected)%n", cc.generated().scope()));
-            }
-
             md.append(String.format("- Description Similarity: %.2f%n", cc.descriptionSimilarity()));
         } else {
             // Fallback to old behavior if component comparison not available
@@ -159,10 +143,6 @@ public class ClaudeExporter {
                 md.append(String.format("- Type: expected=%s, got=%s%n",
                     getExpectedType(tr.expectedMessage()),
                     r.validation().type()));
-            }
-
-            if (r.scopeMatches()) {
-                md.append("- Scope: MATCH\n");
             }
         }
 

@@ -9,6 +9,7 @@ import org.example.harness.evaluation.MetricsCalculator;
 import org.example.harness.evaluation.StructuralValidator;
 import org.example.harness.generator.ClaudeCodeGenerator;
 import org.example.harness.generator.CommitGenerator;
+import org.example.harness.generator.MultiStepGenerator;
 import org.example.harness.generator.OllamaGenerator;
 import org.example.harness.output.ClaudeExporter;
 import org.example.harness.output.ComparisonReport;
@@ -140,6 +141,12 @@ public class HarnessMain {
         // Create the generator based on backend selection
         CommitGenerator generator = createGenerator(backend);
 
+        // For multistep backend, force raw-diff template (it has built-in prompts)
+        if (backend.equalsIgnoreCase("multistep") && templateId.equals("baseline-v1")) {
+            templateId = "raw-diff";
+            System.out.println("Note: Using 'raw-diff' template for multistep backend (built-in prompts)");
+        }
+
         // Check generator availability
         if (!generator.isAvailable()) {
             System.err.println("Error: " + generator.getBackendName() + " backend is not available.");
@@ -263,8 +270,9 @@ public class HarnessMain {
         return switch (backend.toLowerCase()) {
             case "ollama" -> new OllamaGenerator();
             case "claude", "claude-code" -> new ClaudeCodeGenerator();
+            case "multistep" -> new MultiStepGenerator();
             default -> throw new IllegalArgumentException(
-                "Unknown backend: " + backend + ". Supported backends: ollama, claude"
+                "Unknown backend: " + backend + ". Supported backends: ollama, claude, multistep"
             );
         };
     }
@@ -305,6 +313,7 @@ public class HarnessMain {
             Backends:
               ollama          Use local Ollama server (requires: ollama serve)
               claude          Use Claude Code CLI (requires: claude CLI installed)
+              multistep       Multi-step generator (type→scope→description in separate queries)
 
             Examples:
               # Extract test cases from Angular

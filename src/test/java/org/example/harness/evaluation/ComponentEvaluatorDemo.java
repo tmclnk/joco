@@ -71,8 +71,6 @@ public class ComponentEvaluatorDemo {
         System.out.println("\nResults:");
         System.out.println("  Both Valid:       " + result.bothValid());
         System.out.println("  Type Matches:     " + result.typeMatches());
-        System.out.println("  Scope Matches:    " + result.scopeMatches());
-        System.out.println("  Scope Presence:   " + result.scopePresenceMatches());
         System.out.println("  Desc Similarity:  " + String.format("%.3f", result.descriptionSimilarity()));
 
         if (result.expected().valid()) {

@@ -38,8 +38,6 @@ public class ComparisonReport {
             md.append("| Metric | ").append(runId1).append(" | ").append(runId2).append(" | Delta |\n");
             md.append("|--------|-------|-------|-------|\n");
             appendRow(md, "Type Accuracy", cm1.typeAccuracyRate(), cm2.typeAccuracyRate());
-            appendRow(md, "Scope Match (when expected)", cm1.scopeMatchRate(), cm2.scopeMatchRate());
-            appendRow(md, "Scope Presence Match", cm1.scopePresenceMatchRate(), cm2.scopePresenceMatchRate());
             appendSimilarityRow(md, "Avg Description Similarity", cm1.averageDescriptionSimilarity(), cm2.averageDescriptionSimilarity());
         }
 

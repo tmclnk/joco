@@ -4,12 +4,14 @@ import org.example.harness.runner.TestResult;
 
 /**
  * Complete evaluation for a single test case.
+ *
+ * Note: Scope matching is intentionally excluded since we generate
+ * `type: description` format without scopes.
  */
 public record EvaluationResult(
     TestResult testResult,
     StructuralValidator.ValidationResult validation,
     boolean typeMatches,
-    boolean scopeMatches,
     ComponentComparisonResult componentComparison
 ) {
     /**
@@ -32,7 +34,6 @@ public record EvaluationResult(
                 testResult,
                 validator.validate(""),
                 false,
-                false,
                 componentEvaluator.compare(testResult.expectedMessage(), "")
             );
         }
@@ -47,13 +48,10 @@ public record EvaluationResult(
         boolean typeMatches = validation.type() != null &&
             validation.type().equals(expectedValidation.type());
 
-        boolean scopeMatches = validation.scope() != null &&
-            validation.scope().equals(expectedValidation.scope());
-
         // Perform component-level comparison
         ComponentComparisonResult componentComparison =
             componentEvaluator.compare(testResult.expectedMessage(), testResult.generatedMessage());
 
-        return new EvaluationResult(testResult, validation, typeMatches, scopeMatches, componentComparison);
+        return new EvaluationResult(testResult, validation, typeMatches, componentComparison);
     }
 }
