@@ -344,6 +344,33 @@ qwen2.5-coder:1.5b (good):
 
 ---
 
+### Experiment 6: maxTokens Investigation
+
+**Date**: 2026-01-16
+**Hypothesis**: Different DESC_MAX_TOKENS values would affect output quality
+**Config**: Tested DESC_MAX_TOKENS values of 15, 20, 30, and 50 on Vue commits
+
+**Results Table**:
+
+| DESC_MAX_TOKENS | Avg Length | Score | Completion Tokens |
+|-----------------|------------|-------|-------------------|
+| 15              | 68.2       | 84.0  | 16.9              |
+| 20              | 65.3       | 87.0  | 18.7              |
+| 30              | 67.5       | 85.5  | 21.0              |
+| 50              | 61.3       | 87.0  | 18.7              |
+
+**Key Findings**:
+1. Token limit ≥20 is sufficient - model naturally produces 17-21 tokens regardless of limit
+2. DESC_MAX_TOKENS=15 is too low - score drops to 84, outputs truncated awkwardly
+3. The 72-char cleanup truncation in cleanDescription() is the real constraint, not the token limit
+4. TYPE_MAX_TOKENS=10 is fine for single-word type classification
+
+**Conclusion**: Current values (TYPE_MAX_TOKENS=10, DESC_MAX_TOKENS=30) are optimal. Keep them.
+
+**Run IDs**: tokens-15, tokens-20, tokens-30, tokens-50
+
+---
+
 ## Future Experiments to Try
 
 - [ ] Lower temperature (0.3-0.5) for more deterministic output

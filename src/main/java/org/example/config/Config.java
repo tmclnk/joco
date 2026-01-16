@@ -4,39 +4,34 @@ import java.util.Objects;
 
 /**
  * Configuration domain model representing the application settings.
- * Contains model selection, token limits, and temperature settings for LLM interactions.
+ * Contains model selection and temperature settings for LLM interactions.
  */
 public class Config {
     private static final String DEFAULT_MODEL = "qwen2.5-coder:1.5b";
-    private static final int DEFAULT_MAX_TOKENS = 100;
     private static final double DEFAULT_TEMPERATURE = 0.3;
 
     private final String model;
-    private final int maxTokens;
     private final double temperature;
 
     /**
      * Creates a Config with default values.
      */
     public Config() {
-        this(DEFAULT_MODEL, DEFAULT_MAX_TOKENS, DEFAULT_TEMPERATURE);
+        this(DEFAULT_MODEL, DEFAULT_TEMPERATURE);
     }
 
     /**
      * Creates a Config with specified values.
      *
      * @param model the LLM model identifier
-     * @param maxTokens the maximum number of tokens
      * @param temperature the sampling temperature
      * @throws IllegalArgumentException if validation fails
      */
-    public Config(String model, int maxTokens, double temperature) {
+    public Config(String model, double temperature) {
         validateModel(model);
-        validateMaxTokens(maxTokens);
         validateTemperature(temperature);
 
         this.model = model;
-        this.maxTokens = maxTokens;
         this.temperature = temperature;
     }
 
@@ -66,19 +61,6 @@ public class Config {
     }
 
     /**
-     * Validates the maxTokens parameter.
-     *
-     * @param maxTokens the maxTokens to validate
-     * @throws IllegalArgumentException if maxTokens is not in the valid range [50, 500]
-     */
-    private void validateMaxTokens(int maxTokens) {
-        if (maxTokens < 50 || maxTokens > 500) {
-            throw new IllegalArgumentException(
-                "Max tokens must be between 50 and 500, got: " + maxTokens);
-        }
-    }
-
-    /**
      * Validates the temperature parameter.
      *
      * @param temperature the temperature to validate
@@ -95,10 +77,6 @@ public class Config {
         return model;
     }
 
-    public int getMaxTokens() {
-        return maxTokens;
-    }
-
     public double getTemperature() {
         return temperature;
     }
@@ -111,7 +89,7 @@ public class Config {
      * @throws IllegalArgumentException if the new model is invalid
      */
     public Config withModel(String newModel) {
-        return new Config(newModel, this.maxTokens, this.temperature);
+        return new Config(newModel, this.temperature);
     }
 
     @Override
@@ -119,21 +97,19 @@ public class Config {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Config config = (Config) o;
-        return maxTokens == config.maxTokens &&
-               Double.compare(config.temperature, temperature) == 0 &&
+        return Double.compare(config.temperature, temperature) == 0 &&
                Objects.equals(model, config.model);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(model, maxTokens, temperature);
+        return Objects.hash(model, temperature);
     }
 
     @Override
     public String toString() {
         return "Config{" +
                "model='" + model + '\'' +
-               ", maxTokens=" + maxTokens +
                ", temperature=" + temperature +
                '}';
     }

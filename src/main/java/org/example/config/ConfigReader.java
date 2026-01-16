@@ -96,7 +96,7 @@ public class ConfigReader {
         if (dto.model != null && !dto.model.trim().isEmpty()) {
             try {
                 // Try to create a temp config to validate the model
-                new Config(dto.model, defaults.getMaxTokens(), defaults.getTemperature());
+                new Config(dto.model, defaults.getTemperature());
                 model = dto.model;
             } catch (IllegalArgumentException e) {
                 logger.warn("Invalid model value '{}': {}. Using default: {}",
@@ -106,25 +106,12 @@ public class ConfigReader {
             logger.warn("Empty model value provided. Using default: {}", defaults.getModel());
         }
 
-        // Validate and use maxTokens
-        int maxTokens = defaults.getMaxTokens();
-        if (dto.maxTokens != 0) {
-            try {
-                // Try to create a temp config to validate maxTokens
-                new Config(defaults.getModel(), dto.maxTokens, defaults.getTemperature());
-                maxTokens = dto.maxTokens;
-            } catch (IllegalArgumentException e) {
-                logger.warn("Invalid maxTokens value '{}': {}. Using default: {}",
-                    dto.maxTokens, e.getMessage(), defaults.getMaxTokens());
-            }
-        }
-
         // Validate and use temperature
         double temperature = defaults.getTemperature();
         if (dto.temperature != 0.0) {
             try {
                 // Try to create a temp config to validate temperature
-                new Config(defaults.getModel(), defaults.getMaxTokens(), dto.temperature);
+                new Config(defaults.getModel(), dto.temperature);
                 temperature = dto.temperature;
             } catch (IllegalArgumentException e) {
                 logger.warn("Invalid temperature value '{}': {}. Using default: {}",
@@ -134,7 +121,7 @@ public class ConfigReader {
 
         // Create final config with validated values
         // At this point all values are valid, so this won't throw
-        return new Config(model, maxTokens, temperature);
+        return new Config(model, temperature);
     }
 
     /**
@@ -153,7 +140,6 @@ public class ConfigReader {
      */
     static class ConfigDto {
         String model;
-        int maxTokens;
         double temperature;
     }
 }

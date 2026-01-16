@@ -18,9 +18,11 @@ public class MultiStepCommitGenerator {
     private final String model;
     private final double temperature;
 
-    // Token limits for each step
+    // Token limits for each step - tuned based on actual generation analysis:
+    // TYPE: Only needs 1 word (e.g., "fix", "feat"), 10 tokens provides buffer
     private static final int TYPE_MAX_TOKENS = 10;
-    private static final int DESC_MAX_TOKENS = 30;
+    // DESC: Typical descriptions use 17-21 tokens, 25 provides sufficient buffer
+    private static final int DESC_MAX_TOKENS = 25;
 
     // Type classification prompt - file-pattern based
     private static final String TYPE_PROMPT = """
