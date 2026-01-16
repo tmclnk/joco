@@ -7,9 +7,9 @@ import org.example.config.ConfigReader;
 import org.example.git.DiffFormatter;
 import org.example.git.GitException;
 import org.example.git.GitRepository;
-import org.example.ollama.CommitMessagePrompt;
 import org.example.ollama.GenerateRequest;
 import org.example.ollama.GenerateResponse;
+import org.example.ollama.MultiStepCommitGenerator;
 import org.example.ollama.OllamaClient;
 import org.example.ollama.OllamaConnectionException;
 import org.example.ollama.OllamaException;
@@ -165,23 +165,19 @@ public class Main {
 
             System.out.println("Connected to Ollama.");
 
-            // Step 5: Generate commit message
+            // Step 5: Generate commit message using multi-step approach
             System.out.println("\nGenerating commit message...");
-            String prompt = CommitMessagePrompt.createCompletePrompt(diff);
 
-            GenerateRequest request = new GenerateRequest(
+            MultiStepCommitGenerator generator = new MultiStepCommitGenerator(
+                ollamaClient,
                 config.getModel(),
-                prompt,
-                false,
-                new GenerateRequest.Options(
-                    config.getTemperature(),
-                    config.getMaxTokens()
-                )
+                config.getTemperature()
             );
 
-            GenerateResponse response;
+            String commitMessage;
             try {
-                response = ollamaClient.generate(request);
+                commitMessage = generator.generate(diff);
+                logger.info("Generated commit message: {}", commitMessage);
             } catch (OllamaConnectionException e) {
                 OutputFormatter.error("Lost connection to Ollama during generation.");
                 OutputFormatter.info(e.getMessage());
@@ -197,11 +193,10 @@ public class Main {
                 return; // Unreachable, but helps compiler
             }
 
-            // Validate and clean the generated message
-            String commitMessage;
+            // Validate the generated message
             try {
-                commitMessage = MessageValidator.validateAndClean(response.response());
-                logger.info("Generated and cleaned commit message: {}", commitMessage);
+                commitMessage = MessageValidator.validateAndClean(commitMessage);
+                logger.info("Validated commit message: {}", commitMessage);
             } catch (IllegalArgumentException e) {
                 OutputFormatter.error(e.getMessage());
                 OutputFormatter.hint("Try regenerating the message or use a different model.");
