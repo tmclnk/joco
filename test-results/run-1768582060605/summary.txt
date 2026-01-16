@@ -1,0 +1,36 @@
+=== Evaluation Metrics ===
+
+Generation Results:
+  Total tests: 50
+  Successful: 50 (100.0%)
+  Failed: 0
+
+Quality Metrics:
+  Conventional Commit Format: 100.0%
+  Scope Included: 52.0%
+  Length <= 72 chars: 100.0%
+  Length <= 50 chars: 34.0%
+  Average Score: 88.6/100
+  Average Subject Length: 53.0 chars
+
+Type Distribution:
+  docs: 2
+  test: 5
+  fix: 10
+  build: 1
+  ci: 1
+  chore: 2
+  feat: 3
+  refactor: 26
+
+Performance:
+  Avg Generation Time: 5375 ms
+  Avg Prompt Tokens: 0
+  Avg Completion Tokens: 0
+
+Component Metrics:
+  Type Accuracy: 0.0% (0/0)
+  Scope Match (when expected): 0.0% (0/0)
+  Scope Presence Match: 0.0% (0/0)
+  Description Similarity: 0.00 (min: 0.00, max: 0.00)
+  Valid Comparisons: 0

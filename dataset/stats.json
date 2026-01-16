@@ -1,20 +1,15 @@
 {
-  "totalSourceRecords": 404,
-  "filteredRecords": 47,
-  "trainRecords": 42,
-  "validationRecords": 5,
-  "typeDistribution": {
-    "build": 11,
-    "ci": 1,
-    "docs": 17,
-    "feat": 3,
-    "fix": 2,
-    "refactor": 12,
-    "test": 1
+  "totalExamples": 290,
+  "trainExamples": 261,
+  "validationExamples": 29,
+  "sources": {
+    "angular": 47,
+    "react": 50,
+    "vue": 50,
+    "fastapi": 50,
+    "go": 48,
+    "rust": 50
   },
-  "sourceDistribution": {
-    "angular": 47
-  },
-  "avgDiffLength": 2444,
-  "avgOutputLength": 53
+  "labeledWith": "claude",
+  "dateGenerated": "2026-01-16"
 }
