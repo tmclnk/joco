@@ -44,3 +44,9 @@ dependency-reduced-pom.xml
 
 ### Benchmark Repos ###
 tmp/
+
+### Finetuning artifacts ###
+joco-lora/
+
+### Test harness output ###
+test-results/
