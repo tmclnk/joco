@@ -27,10 +27,30 @@ public class TestCaseExtractor {
 
     private final Path repoPath;
     private final String repoName;
+    private boolean filterConventional = true;
+    private String authorFilter = null;
 
     public TestCaseExtractor(Path repoPath, String repoName) {
         this.repoPath = repoPath;
         this.repoName = repoName;
+    }
+
+    /**
+     * Sets whether to filter for conventional commits only.
+     * When false, all commits are extracted regardless of format.
+     */
+    public TestCaseExtractor setFilterConventional(boolean filter) {
+        this.filterConventional = filter;
+        return this;
+    }
+
+    /**
+     * Sets an author email or name pattern to filter commits.
+     * When set, only commits from matching authors are extracted.
+     */
+    public TestCaseExtractor setAuthorFilter(String author) {
+        this.authorFilter = author;
+        return this;
     }
 
     /**
@@ -58,8 +78,8 @@ public class TestCaseExtractor {
             try {
                 String message = getCommitMessage(hash);
 
-                // Only include conventional commits
-                if (!isConventionalCommit(message)) {
+                // Optionally filter for conventional commits only
+                if (filterConventional && !isConventionalCommit(message)) {
                     logger.debug("Skipping non-conventional commit: {}", hash.substring(0, 8));
                     continue;
                 }
@@ -80,6 +100,7 @@ public class TestCaseExtractor {
 
                 String id = repoName.replaceAll("[^a-zA-Z0-9]", "-") + "-" + hash.substring(0, 8);
                 String firstLine = message.lines().findFirst().orElse(message);
+                String author = getCommitAuthor(hash);
 
                 TestCase tc = new TestCase(
                     id,
@@ -87,7 +108,7 @@ public class TestCaseExtractor {
                     firstLine,
                     repoName,
                     hash,
-                    Map.of()
+                    Map.of("author", author)
                 );
 
                 testCases.add(tc);
@@ -108,9 +129,15 @@ public class TestCaseExtractor {
     }
 
     private List<String> getRecentCommits(int count) throws IOException {
-        ProcessBuilder pb = new ProcessBuilder(
+        List<String> args = new ArrayList<>(List.of(
             "git", "log", "--format=%H", "-n", String.valueOf(count)
-        );
+        ));
+
+        if (authorFilter != null && !authorFilter.isBlank()) {
+            args.add("--author=" + authorFilter);
+        }
+
+        ProcessBuilder pb = new ProcessBuilder(args);
         pb.directory(repoPath.toFile());
 
         return runCommand(pb);
@@ -134,6 +161,16 @@ public class TestCaseExtractor {
 
         List<String> lines = runCommand(pb);
         return String.join("\n", lines);
+    }
+
+    private String getCommitAuthor(String hash) throws IOException {
+        ProcessBuilder pb = new ProcessBuilder(
+            "git", "log", "-1", "--format=%an <%ae>", hash
+        );
+        pb.directory(repoPath.toFile());
+
+        List<String> lines = runCommand(pb);
+        return lines.isEmpty() ? "" : lines.get(0);
     }
 
     private List<String> runCommand(ProcessBuilder pb) throws IOException {

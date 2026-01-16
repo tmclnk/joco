@@ -42,5 +42,11 @@ build/
 .claude/settings.local.json
 dependency-reduced-pom.xml
 
-### Test Harness ###
+### Benchmark Repos ###
+tmp/
+
+### Finetuning artifacts ###
+joco-lora/
+
+### Test harness output ###
 test-results/

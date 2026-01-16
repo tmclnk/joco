@@ -2,10 +2,12 @@ package org.example.harness.runner;
 
 import org.example.harness.data.TestCase;
 import org.example.harness.data.TestCaseLoader;
+import org.example.harness.generator.CommitGenerator;
+import org.example.harness.generator.GenerationConfig;
+import org.example.harness.generator.GenerationResult;
+import org.example.harness.generator.OllamaGenerator;
 import org.example.harness.prompt.PromptTemplate;
 import org.example.harness.prompt.PromptTemplateRegistry;
-import org.example.ollama.GenerateRequest;
-import org.example.ollama.GenerateResponse;
 import org.example.ollama.OllamaClient;
 import org.example.util.MessageValidator;
 import org.slf4j.Logger;
@@ -16,26 +18,60 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Orchestrates test execution against Ollama.
+ * Orchestrates test execution against a commit message generator backend.
  */
 public class TestRunner {
 
     private static final Logger logger = LoggerFactory.getLogger(TestRunner.class);
 
-    private final OllamaClient ollamaClient;
+    private final CommitGenerator generator;
     private final PromptTemplateRegistry registry;
     private final TestCaseLoader loader;
 
-    public TestRunner(OllamaClient client) {
-        this.ollamaClient = client;
+    /**
+     * Creates a TestRunner with a CommitGenerator backend.
+     *
+     * @param generator The commit message generator to use
+     */
+    public TestRunner(CommitGenerator generator) {
+        this.generator = generator;
         this.registry = new PromptTemplateRegistry();
         this.loader = new TestCaseLoader();
     }
 
-    public TestRunner(OllamaClient client, PromptTemplateRegistry registry) {
-        this.ollamaClient = client;
+    /**
+     * Creates a TestRunner with a CommitGenerator and custom registry.
+     *
+     * @param generator The commit message generator to use
+     * @param registry The prompt template registry
+     */
+    public TestRunner(CommitGenerator generator, PromptTemplateRegistry registry) {
+        this.generator = generator;
         this.registry = registry;
         this.loader = new TestCaseLoader();
+    }
+
+    /**
+     * Creates a TestRunner with an OllamaClient (backward compatibility).
+     *
+     * @param client The Ollama client to use
+     * @deprecated Use {@link #TestRunner(CommitGenerator)} instead
+     */
+    @Deprecated
+    public TestRunner(OllamaClient client) {
+        this(new OllamaGenerator(client));
+    }
+
+    /**
+     * Creates a TestRunner with an OllamaClient and custom registry (backward compatibility).
+     *
+     * @param client The Ollama client to use
+     * @param registry The prompt template registry
+     * @deprecated Use {@link #TestRunner(CommitGenerator, PromptTemplateRegistry)} instead
+     */
+    @Deprecated
+    public TestRunner(OllamaClient client, PromptTemplateRegistry registry) {
+        this(new OllamaGenerator(client), registry);
     }
 
     /**
@@ -86,15 +122,14 @@ public class TestRunner {
         try {
             String prompt = template.generatePrompt(testCase.diff());
 
-            GenerateRequest request = new GenerateRequest(
+            GenerationConfig genConfig = new GenerationConfig(
                 config.model(),
-                prompt,
-                false,
-                new GenerateRequest.Options(config.temperature(), config.maxTokens())
+                config.temperature(),
+                config.maxTokens()
             );
 
-            GenerateResponse response = ollamaClient.generate(request);
-            String rawResponse = response.response();
+            GenerationResult result = generator.generate(prompt, genConfig);
+            String rawResponse = result.response();
 
             // Clean the response
             String cleaned = cleanResponse(rawResponse);
@@ -105,9 +140,9 @@ public class TestRunner {
                 config.model(),
                 testCase.expectedMessage(),
                 cleaned,
-                System.currentTimeMillis() - startTime,
-                response.promptEvalCount() != null ? response.promptEvalCount() : 0,
-                response.evalCount() != null ? response.evalCount() : 0
+                result.durationMs(),
+                result.promptTokens(),
+                result.completionTokens()
             );
 
         } catch (Exception e) {

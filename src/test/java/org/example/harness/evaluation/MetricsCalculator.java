@@ -34,6 +34,14 @@ public class MetricsCalculator {
 
         Map<String, Integer> typeDistribution = new HashMap<>();
 
+        // Component metrics tracking
+        int typeMatchCount = 0;
+        int typeComparisonCount = 0;
+        int validComparisonCount = 0;
+        double totalDescriptionSimilarity = 0.0;
+        double minDescriptionSimilarity = Double.MAX_VALUE;
+        double maxDescriptionSimilarity = Double.MIN_VALUE;
+
         for (EvaluationResult result : results) {
             TestResult tr = result.testResult();
             StructuralValidator.ValidationResult v = result.validation();
@@ -65,6 +73,28 @@ public class MetricsCalculator {
             if (v.type() != null) {
                 typeDistribution.merge(v.type(), 1, Integer::sum);
             }
+
+            // Process component comparison metrics
+            ComponentComparisonResult cc = result.componentComparison();
+            if (cc != null && cc.bothValid()) {
+                validComparisonCount++;
+
+                // Type accuracy
+                typeComparisonCount++;
+                if (cc.typeMatches()) {
+                    typeMatchCount++;
+                }
+
+                // Description similarity
+                double descSim = cc.descriptionSimilarity();
+                totalDescriptionSimilarity += descSim;
+                if (descSim < minDescriptionSimilarity) {
+                    minDescriptionSimilarity = descSim;
+                }
+                if (descSim > maxDescriptionSimilarity) {
+                    maxDescriptionSimilarity = descSim;
+                }
+            }
         }
 
         int failedGenerations = totalTests - successfulGenerations;
@@ -72,6 +102,14 @@ public class MetricsCalculator {
 
         // Use successfulGenerations as denominator for quality metrics
         int qualityBase = successfulGenerations > 0 ? successfulGenerations : 1;
+
+        // Compute component metrics
+        ComponentMetrics componentMetrics = computeComponentMetrics(
+            typeMatchCount, typeComparisonCount,
+            validComparisonCount,
+            totalDescriptionSimilarity,
+            minDescriptionSimilarity, maxDescriptionSimilarity
+        );
 
         return new EvaluationMetrics(
             totalTests,
@@ -89,7 +127,42 @@ public class MetricsCalculator {
             totalPromptTokens,
             totalCompletionTokens,
             (double) totalPromptTokens / totalTests,
-            (double) totalCompletionTokens / totalTests
+            (double) totalCompletionTokens / totalTests,
+            componentMetrics
+        );
+    }
+
+    /**
+     * Computes ComponentMetrics from aggregated values.
+     */
+    private ComponentMetrics computeComponentMetrics(
+            int typeMatchCount, int typeComparisonCount,
+            int validComparisonCount,
+            double totalDescriptionSimilarity,
+            double minDescriptionSimilarity, double maxDescriptionSimilarity) {
+
+        if (validComparisonCount == 0) {
+            return ComponentMetrics.empty();
+        }
+
+        double typeAccuracyRate = typeComparisonCount > 0
+            ? (double) typeMatchCount / typeComparisonCount : 0.0;
+
+        double avgDescSimilarity = validComparisonCount > 0
+            ? totalDescriptionSimilarity / validComparisonCount : 0.0;
+
+        // Handle edge cases for min/max
+        if (minDescriptionSimilarity == Double.MAX_VALUE) {
+            minDescriptionSimilarity = 0.0;
+        }
+        if (maxDescriptionSimilarity == Double.MIN_VALUE) {
+            maxDescriptionSimilarity = 0.0;
+        }
+
+        return new ComponentMetrics(
+            typeAccuracyRate, typeMatchCount, typeComparisonCount,
+            avgDescSimilarity, minDescriptionSimilarity, maxDescriptionSimilarity,
+            validComparisonCount
         );
     }
 
@@ -99,7 +172,8 @@ public class MetricsCalculator {
             0.0, 0.0, 0.0, 0.0,
             Map.of(),
             0.0, 0.0, 0.0, 0.0,
-            0, 0, 0.0, 0.0
+            0, 0, 0.0, 0.0,
+            ComponentMetrics.empty()
         );
     }
 }

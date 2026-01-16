@@ -1,0 +1,15 @@
+{
+  "totalExamples": 290,
+  "trainExamples": 261,
+  "validationExamples": 29,
+  "sources": {
+    "angular": 47,
+    "react": 50,
+    "vue": 50,
+    "fastapi": 50,
+    "go": 48,
+    "rust": 50
+  },
+  "labeledWith": "claude",
+  "dateGenerated": "2026-01-16"
+}

@@ -1,0 +1,21 @@
+{
+  "totalTests": 5,
+  "successfulGenerations": 5,
+  "failedGenerations": 0,
+  "conventionalCommitRate": 0.4,
+  "scopeInclusionRate": 0.4,
+  "lengthComplianceRate": 1.0,
+  "recommendedLengthRate": 0.6,
+  "typeDistribution": {
+    "fix": 1,
+    "feat": 1
+  },
+  "averageSubjectLength": 33.2,
+  "averageScore": 54.0,
+  "successRate": 1.0,
+  "averageGenerationTimeMs": 6866.8,
+  "totalPromptTokens": 12307,
+  "totalCompletionTokens": 205,
+  "averagePromptTokens": 2461.4,
+  "averageCompletionTokens": 41.0
+}

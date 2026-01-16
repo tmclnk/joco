@@ -1,0 +1,23 @@
+{
+  "totalTests": 17,
+  "successfulGenerations": 17,
+  "failedGenerations": 0,
+  "conventionalCommitRate": 0.8235294117647058,
+  "scopeInclusionRate": 0.8235294117647058,
+  "lengthComplianceRate": 1.0,
+  "recommendedLengthRate": 0.4117647058823529,
+  "typeDistribution": {
+    "fix": 5,
+    "build": 4,
+    "refactor": 1,
+    "feat": 4
+  },
+  "averageSubjectLength": 55.88235294117647,
+  "averageScore": 81.76470588235294,
+  "successRate": 1.0,
+  "averageGenerationTimeMs": 2817.5882352941176,
+  "totalPromptTokens": 17214,
+  "totalCompletionTokens": 267,
+  "averagePromptTokens": 1012.5882352941177,
+  "averageCompletionTokens": 15.705882352941176
+}

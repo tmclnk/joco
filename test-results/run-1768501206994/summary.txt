@@ -1,0 +1,25 @@
+=== Evaluation Metrics ===
+
+Generation Results:
+  Total tests: 10
+  Successful: 10 (100.0%)
+  Failed: 0
+
+Quality Metrics:
+  Conventional Commit Format: 70.0%
+  Scope Included: 60.0%
+  Length <= 72 chars: 100.0%
+  Length <= 50 chars: 60.0%
+  Average Score: 74.0/100
+  Average Subject Length: 45.2 chars
+
+Type Distribution:
+  docs: 1
+  fix: 2
+  build: 3
+  feat: 1
+
+Performance:
+  Avg Generation Time: 6375 ms
+  Avg Prompt Tokens: 2197
+  Avg Completion Tokens: 39

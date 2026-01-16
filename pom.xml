@@ -122,6 +122,25 @@
             </build>
         </profile>
 
+        <!-- Dataset Curator Profile: Generate finetuning dataset -->
+        <!-- Usage: ./mvnw exec:java -Pdataset -->
+        <profile>
+            <id>dataset</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>3.2.0</version>
+                        <configuration>
+                            <mainClass>org.example.harness.dataset.DatasetCurator</mainClass>
+                            <classpathScope>test</classpathScope>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
         <!-- Native Image Profile: Build native executable using GraalVM -->
         <!-- Usage: ./mvnw package -Pnative -->
         <profile>
