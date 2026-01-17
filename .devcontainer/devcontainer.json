@@ -36,7 +36,11 @@
   "postAttachCommand":"",
 
   "remoteUser": "vscode",
-  
+
+  "containerEnv": {
+    "OLLAMA_HOST": "http://172.17.0.1:11434"
+  },
+
   "mounts": [
     "source=${localEnv:HOME}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=cached"
   ]
