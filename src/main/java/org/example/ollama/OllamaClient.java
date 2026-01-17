@@ -33,10 +33,23 @@ public class OllamaClient {
     private final Gson gson;
 
     /**
-     * Creates a new OllamaClient with default settings (localhost:11434).
+     * Creates a new OllamaClient with default settings.
+     * Uses OLLAMA_HOST environment variable if set, otherwise localhost:11434.
      */
     public OllamaClient() {
-        this(DEFAULT_BASE_URL);
+        this(getDefaultBaseUrl());
+    }
+
+    private static String getDefaultBaseUrl() {
+        String envHost = System.getenv("OLLAMA_HOST");
+        if (envHost != null && !envHost.isBlank()) {
+            // If it's just host:port, add http://
+            if (!envHost.startsWith("http://") && !envHost.startsWith("https://")) {
+                return "http://" + envHost;
+            }
+            return envHost;
+        }
+        return DEFAULT_BASE_URL;
     }
 
     /**
