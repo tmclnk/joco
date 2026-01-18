@@ -1,0 +1,9 @@
+# Requirements for CPU-based fine-tuning
+# Install with: pip install -r requirements-finetune.txt
+
+torch>=2.0.0
+transformers>=4.40.0
+datasets>=2.18.0
+peft>=0.10.0
+accelerate>=0.28.0
+sentencepiece>=0.1.99
