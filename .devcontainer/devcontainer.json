@@ -12,10 +12,6 @@
     "ghcr.io/devcontainers/features/git:1": {
       "version": "latest"
     },
-    "ghcr.io/devcontainers/features/docker-in-docker:2": {
-      "version": "latest",
-      "dockerDashComposeVersion": "v2"
-    },
     "ghcr.io/devcontainers/features/go:1": {},
     "ghcr.io/devcontainers/features/java:1": {},
     "ghcr.io/devcontainers/features/python:1": {
@@ -46,6 +42,6 @@
 
   "mounts": [
     "source=${localEnv:HOME}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=cached",
-    "source=joco-ml-cache,target=/ml-cache,type=volume"
+    "type=tmpfs,destination=/tmp,tmpfs-size=4G"
   ]
 }
