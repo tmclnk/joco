@@ -5,10 +5,9 @@ target/
 .kotlin
 
 ### IntelliJ IDEA ###
-.idea/modules.xml
-.idea/jarRepositories.xml
-.idea/compiler.xml
-.idea/libraries/
+.idea/
+!.idea/codeStyles/
+!.idea/inspectionProfiles/
 *.iws
 *.iml
 *.ipr
@@ -50,3 +49,12 @@ joco-lora/
 
 ### Test harness output ###
 test-results/
+
+### Python ###
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.swp
+*.swo
+*~
