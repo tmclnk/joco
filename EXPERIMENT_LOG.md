@@ -371,6 +371,46 @@ qwen2.5-coder:1.5b (good):
 
 ---
 
+## Fine-tuning Experiments
+
+### Experiment 7: CPU-Based LoRA Fine-tuning (Qwen2.5-Coder-0.5B)
+
+**Date**: 2026-01-18
+**Hypothesis**: Fine-tuning a small model on curated commit message examples would improve format compliance and type accuracy
+**Config**:
+- Base model: `Qwen/Qwen2.5-Coder-0.5B-Instruct`
+- Method: LoRA (rank=8, alpha=16)
+- Training: 261 examples, 1 epoch, batch_size=1, gradient_accumulation=4
+- Hardware: Intel Celeron N5105 (CPU-only), 15GB RAM
+- Training time: ~66 minutes for 1 epoch
+
+**Training Details**:
+- Trainable params: 1,081,344 (0.22% of 495M total)
+- Validation examples: 29
+- Output: `joco-lora-cpu/` (~4.3MB adapter)
+
+**Dataset**:
+- 261 training examples from `dataset/train.jsonl`
+- Mix of Go, React, FastAPI, Vue, Rust commit messages
+- Chat format with instruction/input/output structure
+
+**Results**: Pending evaluation
+- TODO: Run harness with fine-tuned model
+- TODO: Compare format compliance vs base model
+- TODO: Measure type accuracy improvement
+
+**Files Created**:
+- `scripts/finetune-cpu.py` - HuggingFace + PEFT training script
+- `requirements-finetune.txt` - Python dependencies
+- `joco-lora-cpu/` - Trained LoRA adapter
+
+**Notes**:
+- CPU training is slow but feasible for small models
+- MLX (Apple Silicon) version exists at `scripts/finetune-mlx.py`
+- Gradient checkpointing conflicts with LoRA on CPU, had to disable
+
+---
+
 ## Future Experiments to Try
 
 - [ ] Lower temperature (0.3-0.5) for more deterministic output
@@ -378,10 +418,13 @@ qwen2.5-coder:1.5b (good):
 - [ ] System prompt vs user prompt separation
 - [ ] JSON mode / structured output
 - [x] Different base models (llama3.2, gemma) - llama3.2:1b wins
-- [ ] Finetuned model on curated dataset
+- [x] Finetuned model on curated dataset - LoRA adapter trained
+- [ ] Evaluate fine-tuned model with harness
 - [ ] Distillation from Claude outputs
 - [ ] Train larger model, quantize down
 - [x] Multi-step generation (type→scope→description) - 100% format compliance!
 - [ ] Run multi-step on larger test set (20-50 cases) for statistical significance
 - [ ] Parallelize steps 1 and 2 in multi-step to reduce latency
 - [ ] Try multi-step with llama3.2:1b (best small model)
+- [ ] Fine-tune with more epochs (3-5)
+- [ ] Fine-tune larger model (1.5B, 3B) if GPU available

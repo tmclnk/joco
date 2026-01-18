@@ -1,7 +1,7 @@
 {
   "name": "General Purpose Dev Container",
   "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
-  
+  "runArgs": ["--storage-opt", "size=30G"],
   "features": {
     "ghcr.io/devcontainers/features/common-utils:2": {
       "installZsh": true,
