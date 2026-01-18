@@ -1,0 +1,317 @@
+{
+  "dataset": "validation_extended",
+  "total": 30,
+  "format_correct": 28,
+  "type_correct": 0,
+  "exact_match": 0,
+  "predictions": [
+    {
+      "expected": "",
+      "predicted": "docs(chore): update README.md for new version",
+      "expected_type": "unknown",
+      "predicted_type": "docs",
+      "valid_format": true,
+      "type_match": false,
+      "inference_time": 3.308518171310425
+    },
+    {
+      "expected": "",
+      "predicted": "docs: add missing link to README",
+      "expected_type": "unknown",
+      "predicted_type": "docs",
+      "valid_format": true,
+      "type_match": false,
+      "inference_time": 2.5283191204071045
+    },
+    {
+      "expected": "docs: update changelog with patch releases",
+      "predicted": "### 19.2.1 (Dec 3, 2025)",
+      "expected_type": "docs",
+      "predicted_type": "unknown",
+      "valid_format": false,
+      "type_match": false,
+      "inference_time": 31.613422870635986
+    },
+    {
+      "expected": "",
+      "predicted": "docs: update README.md to reflect new version",
+      "expected_type": "unknown",
+      "predicted_type": "docs",
+      "valid_format": true,
+      "type_match": false,
+      "inference_time": 3.006405830383301
+    },
+    {
+      "expected": "",
+      "predicted": "docs: add missing link to user guide",
+      "expected_type": "unknown",
+      "predicted_type": "docs",
+      "valid_format": true,
+      "type_match": false,
+      "inference_time": 2.8183810710906982
+    },
+    {
+      "expected": "test(simd): add saturate concat tests",
+      "predicted": "docs: add tests for SaturateConcat and SaturateToUint16Concat.",
+      "expected_type": "test",
+      "predicted_type": "docs",
+      "valid_format": true,
+      "type_match": false,
+      "inference_time": 13.207440376281738
+    },
+    {
+      "expected": "",
+      "predicted": "docs: update README.md to reflect new package name",
+      "expected_type": "unknown",
+      "predicted_type": "docs",
+      "valid_format": true,
+      "type_match": false,
+      "inference_time": 3.3523194789886475
+    },
+    {
+      "expected": "",
+      "predicted": "docs: add missing link to user guide",
+      "expected_type": "unknown",
+      "predicted_type": "docs",
+      "valid_format": true,
+      "type_match": false,
+      "inference_time": 2.7877445220947266
+    },
+    {
+      "expected": "",
+      "predicted": "docs: add link to README in docs/user_guide",
+      "expected_type": "unknown",
+      "predicted_type": "docs",
+      "valid_format": true,
+      "type_match": false,
+      "inference_time": 3.2505226135253906
+    },
+    {
+      "expected": "feat(translate): add detailed body to auto-generated PRs",
+      "predicted": "docs: add translation PR template",
+      "expected_type": "feat",
+      "predicted_type": "docs",
+      "valid_format": true,
+      "type_match": false,
+      "inference_time": 3.507303237915039
+    },
+    {
+      "expected": "",
+      "predicted": "docs: update README.md for new version",
+      "expected_type": "unknown",
+      "predicted_type": "docs",
+      "valid_format": true,
+      "type_match": false,
+      "inference_time": 2.7560853958129883
+    },
+    {
+      "expected": "",
+      "predicted": "docs: update user guide for new version",
+      "expected_type": "unknown",
+      "predicted_type": "docs",
+      "valid_format": true,
+      "type_match": false,
+      "inference_time": 3.351962089538574
+    },
+    {
+      "expected": "",
+      "predicted": "docs: add link to README in docs/README.md",
+      "expected_type": "unknown",
+      "predicted_type": "docs",
+      "valid_format": true,
+      "type_match": false,
+      "inference_time": 4.9518654346466064
+    },
+    {
+      "expected": "fix(resolve): relax assertions in import deduplication",
+      "predicted": "fix(rustc_resolve, src/imports.rs, add, fix)",
+      "expected_type": "fix",
+      "predicted_type": "unknown",
+      "valid_format": false,
+      "type_match": false,
+      "inference_time": 14.70558762550354
+    },
+    {
+      "expected": "",
+      "predicted": "docs: add missing link to user guide",
+      "expected_type": "unknown",
+      "predicted_type": "docs",
+      "valid_format": true,
+      "type_match": false,
+      "inference_time": 3.6018223762512207
+    },
+    {
+      "expected": "",
+      "predicted": "docs(chore): update README.md to reflect new package name",
+      "expected_type": "unknown",
+      "predicted_type": "docs",
+      "valid_format": true,
+      "type_match": false,
+      "inference_time": 5.035199165344238
+    },
+    {
+      "expected": "",
+      "predicted": "docs: update README.md for new release",
+      "expected_type": "unknown",
+      "predicted_type": "docs",
+      "valid_format": true,
+      "type_match": false,
+      "inference_time": 3.561774969100952
+    },
+    {
+      "expected": "",
+      "predicted": "docs: add link to user guide in README",
+      "expected_type": "unknown",
+      "predicted_type": "docs",
+      "valid_format": true,
+      "type_match": false,
+      "inference_time": 4.0492026805877686
+    },
+    {
+      "expected": "",
+      "predicted": "docs: add missing link to user guide",
+      "expected_type": "unknown",
+      "predicted_type": "docs",
+      "valid_format": true,
+      "type_match": false,
+      "inference_time": 3.564305067062378
+    },
+    {
+      "expected": "",
+      "predicted": "docs: update README.md for new release",
+      "expected_type": "unknown",
+      "predicted_type": "docs",
+      "valid_format": true,
+      "type_match": false,
+      "inference_time": 3.8525707721710205
+    },
+    {
+      "expected": "",
+      "predicted": "docs(chore): update README.md to reflect new version",
+      "expected_type": "unknown",
+      "predicted_type": "docs",
+      "valid_format": true,
+      "type_match": false,
+      "inference_time": 4.9609808921813965
+    },
+    {
+      "expected": "",
+      "predicted": "docs: update README.md for new version",
+      "expected_type": "unknown",
+      "predicted_type": "docs",
+      "valid_format": true,
+      "type_match": false,
+      "inference_time": 3.8363850116729736
+    },
+    {
+      "expected": "",
+      "predicted": "docs: update README.md for new release",
+      "expected_type": "unknown",
+      "predicted_type": "docs",
+      "valid_format": true,
+      "type_match": false,
+      "inference_time": 3.592573404312134
+    },
+    {
+      "expected": "",
+      "predicted": "docs: update README.md for new version",
+      "expected_type": "unknown",
+      "predicted_type": "docs",
+      "valid_format": true,
+      "type_match": false,
+      "inference_time": 3.773756265640259
+    },
+    {
+      "expected": "",
+      "predicted": "docs: add missing link to user guide",
+      "expected_type": "unknown",
+      "predicted_type": "docs",
+      "valid_format": true,
+      "type_match": false,
+      "inference_time": 3.658912420272827
+    },
+    {
+      "expected": "",
+      "predicted": "docs: update README.md to reflect new package name",
+      "expected_type": "unknown",
+      "predicted_type": "docs",
+      "valid_format": true,
+      "type_match": false,
+      "inference_time": 4.268106937408447
+    },
+    {
+      "expected": "",
+      "predicted": "docs: add missing link to user guide",
+      "expected_type": "unknown",
+      "predicted_type": "docs",
+      "valid_format": true,
+      "type_match": false,
+      "inference_time": 3.655237913131714
+    },
+    {
+      "expected": "",
+      "predicted": "docs: add missing link to user guide",
+      "expected_type": "unknown",
+      "predicted_type": "docs",
+      "valid_format": true,
+      "type_match": false,
+      "inference_time": 3.748143196105957
+    },
+    {
+      "expected": "",
+      "predicted": "docs: add missing link to user guide",
+      "expected_type": "unknown",
+      "predicted_type": "docs",
+      "valid_format": true,
+      "type_match": false,
+      "inference_time": 3.8361263275146484
+    },
+    {
+      "expected": "",
+      "predicted": "docs(chore): update README.md to reflect new package name",
+      "expected_type": "unknown",
+      "predicted_type": "docs",
+      "valid_format": true,
+      "type_match": false,
+      "inference_time": 5.082096815109253
+    }
+  ],
+  "inference_times": [
+    3.308518171310425,
+    2.5283191204071045,
+    31.613422870635986,
+    3.006405830383301,
+    2.8183810710906982,
+    13.207440376281738,
+    3.3523194789886475,
+    2.7877445220947266,
+    3.2505226135253906,
+    3.507303237915039,
+    2.7560853958129883,
+    3.351962089538574,
+    4.9518654346466064,
+    14.70558762550354,
+    3.6018223762512207,
+    5.035199165344238,
+    3.561774969100952,
+    4.0492026805877686,
+    3.564305067062378,
+    3.8525707721710205,
+    4.9609808921813965,
+    3.8363850116729736,
+    3.592573404312134,
+    3.773756265640259,
+    3.658912420272827,
+    4.268106937408447,
+    3.655237913131714,
+    3.748143196105957,
+    3.8361263275146484,
+    5.082096815109253
+  ],
+  "format_compliance": 0.9333333333333333,
+  "type_accuracy": 0.0,
+  "exact_match_rate": 0.0,
+  "quality_score": 37.333333333333336,
+  "avg_inference_time": 5.307435735066732,
+  "total_inference_time": 159.22307205200195
+}

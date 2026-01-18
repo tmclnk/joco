@@ -1,0 +1,307 @@
+{
+  "dataset": "validation.jsonl",
+  "total": 29,
+  "format_correct": 0,
+  "type_correct": 0,
+  "exact_match": 0,
+  "predictions": [
+    {
+      "expected": "test(simd): add saturate concat tests",
+      "predicted": "",
+      "expected_type": "test",
+      "predicted_type": "unknown",
+      "valid_format": false,
+      "type_match": false,
+      "inference_time": 13.28748083114624
+    },
+    {
+      "expected": "test: fix formatting in codegen comparisons",
+      "predicted": "",
+      "expected_type": "test",
+      "predicted_type": "unknown",
+      "valid_format": false,
+      "type_match": false,
+      "inference_time": 5.488448619842529
+    },
+    {
+      "expected": "docs: update changelog with patch releases",
+      "predicted": "+",
+      "expected_type": "docs",
+      "predicted_type": "unknown",
+      "valid_format": false,
+      "type_match": false,
+      "inference_time": 40.34253764152527
+    },
+    {
+      "expected": "refactor(mir): restructure match pair builder",
+      "predicted": "| 25 +++---",
+      "expected_type": "refactor",
+      "predicted_type": "unknown",
+      "valid_format": false,
+      "type_match": false,
+      "inference_time": 22.207216024398804
+    },
+    {
+      "expected": "fix(compiler): improve setState-in-render error messages",
+      "predicted": "",
+      "expected_type": "fix",
+      "predicted_type": "unknown",
+      "valid_format": false,
+      "type_match": false,
+      "inference_time": 50.01426434516907
+    },
+    {
+      "expected": "refactor: restructure thir pattern matching and fix import ambiguity",
+      "predicted": "",
+      "expected_type": "refactor",
+      "predicted_type": "unknown",
+      "valid_format": false,
+      "type_match": false,
+      "inference_time": 12.570252656936646
+    },
+    {
+      "expected": "fix(keep-alive): handle async component name in include/exclude matching",
+      "predicted": "",
+      "expected_type": "fix",
+      "predicted_type": "unknown",
+      "valid_format": false,
+      "type_match": false,
+      "inference_time": 6.742127180099487
+    },
+    {
+      "expected": "docs: update release notes with spanish translation",
+      "predicted": "",
+      "expected_type": "docs",
+      "predicted_type": "unknown",
+      "valid_format": false,
+      "type_match": false,
+      "inference_time": 3.9591891765594482
+    },
+    {
+      "expected": "refactor(compiler): tighten `Binary.operation` type",
+      "predicted": "",
+      "expected_type": "refactor",
+      "predicted_type": "unknown",
+      "valid_format": false,
+      "type_match": false,
+      "inference_time": 7.102960824966431
+    },
+    {
+      "expected": "fix(generics): improve error handling for wrong number of generic args",
+      "predicted": "ric args",
+      "expected_type": "fix",
+      "predicted_type": "unknown",
+      "valid_format": false,
+      "type_match": false,
+      "inference_time": 5.0918684005737305
+    },
+    {
+      "expected": "fix(react-server): guard against then property in server reference",
+      "predicted": "",
+      "expected_type": "fix",
+      "predicted_type": "unknown",
+      "valid_format": false,
+      "type_match": false,
+      "inference_time": 6.249081373214722
+    },
+    {
+      "expected": "refactor(compiler-core): optimize getPos with binary search",
+      "predicted": "",
+      "expected_type": "refactor",
+      "predicted_type": "unknown",
+      "valid_format": false,
+      "type_match": false,
+      "inference_time": 5.754348516464233
+    },
+    {
+      "expected": "fix(compiler-core): handle TypeScript type expressions correctly",
+      "predicted": "piler core",
+      "expected_type": "fix",
+      "predicted_type": "unknown",
+      "valid_format": false,
+      "type_match": false,
+      "inference_time": 10.49595594406128
+    },
+    {
+      "expected": "feat(eii): add builtin macro support",
+      "predicted": "",
+      "expected_type": "feat",
+      "predicted_type": "unknown",
+      "valid_format": false,
+      "type_match": false,
+      "inference_time": 4.203453302383423
+    },
+    {
+      "expected": "docs: update release notes",
+      "predicted": "",
+      "expected_type": "docs",
+      "predicted_type": "unknown",
+      "valid_format": false,
+      "type_match": false,
+      "inference_time": 6.6023945808410645
+    },
+    {
+      "expected": "feat(translate): add detailed body to auto-generated PRs",
+      "predicted": "eing created before proceeding.",
+      "expected_type": "feat",
+      "predicted_type": "unknown",
+      "valid_format": false,
+      "type_match": false,
+      "inference_time": 9.319632768630981
+    },
+    {
+      "expected": "feat(compiler): add verbose mode for setState-in-effect validation",
+      "predicted": "",
+      "expected_type": "feat",
+      "predicted_type": "unknown",
+      "valid_format": false,
+      "type_match": false,
+      "inference_time": 52.43134808540344
+    },
+    {
+      "expected": "fix(exec): use atomic.SwapInt32 to avoid copylocks vet check",
+      "predicted": "",
+      "expected_type": "fix",
+      "predicted_type": "unknown",
+      "valid_format": false,
+      "type_match": false,
+      "inference_time": 6.177433729171753
+    },
+    {
+      "expected": "feat(runtime-dom): export nodeOps and patchProp",
+      "predicted": "",
+      "expected_type": "feat",
+      "predicted_type": "unknown",
+      "valid_format": false,
+      "type_match": false,
+      "inference_time": 4.930097341537476
+    },
+    {
+      "expected": "fix(react-server): improve cyclic thenable detection",
+      "predicted": "",
+      "expected_type": "fix",
+      "predicted_type": "unknown",
+      "valid_format": false,
+      "type_match": false,
+      "inference_time": 5.467386722564697
+    },
+    {
+      "expected": "docs: release notes for the vscode extension 21.1.0 release",
+      "predicted": "",
+      "expected_type": "docs",
+      "predicted_type": "unknown",
+      "valid_format": false,
+      "type_match": false,
+      "inference_time": 7.315634250640869
+    },
+    {
+      "expected": "fix(resolve): relax assertions in import deduplication",
+      "predicted": "r#test# r#ci# r#build# r#perf#",
+      "expected_type": "fix",
+      "predicted_type": "unknown",
+      "valid_format": false,
+      "type_match": false,
+      "inference_time": 22.136323928833008
+    },
+    {
+      "expected": "refactor(simd): change IsNaN from binary to unary operation",
+      "predicted": "",
+      "expected_type": "refactor",
+      "predicted_type": "unknown",
+      "valid_format": false,
+      "type_match": false,
+      "inference_time": 48.81185960769653
+    },
+    {
+      "expected": "docs: fix typo in changelog",
+      "predicted": "ary prop spread in component definitions",
+      "expected_type": "docs",
+      "predicted_type": "unknown",
+      "valid_format": false,
+      "type_match": false,
+      "inference_time": 13.728877782821655
+    },
+    {
+      "expected": "refactor(borrowck): simplify type check module",
+      "predicted": "",
+      "expected_type": "refactor",
+      "predicted_type": "unknown",
+      "valid_format": false,
+      "type_match": false,
+      "inference_time": 6.052923679351807
+    },
+    {
+      "expected": "docs: add contribution instructions for LLM generated code",
+      "predicted": "code and comments and automated tools for PRs",
+      "expected_type": "docs",
+      "predicted_type": "unknown",
+      "valid_format": false,
+      "type_match": false,
+      "inference_time": 8.321483373641968
+    },
+    {
+      "expected": "refactor(resolve): reorder parameters for consistent old/new ordering",
+      "predicted": "",
+      "expected_type": "refactor",
+      "predicted_type": "unknown",
+      "valid_format": false,
+      "type_match": false,
+      "inference_time": 13.61866283416748
+    },
+    {
+      "expected": "docs: update korean translation release notes",
+      "predicted": "",
+      "expected_type": "docs",
+      "predicted_type": "unknown",
+      "valid_format": false,
+      "type_match": false,
+      "inference_time": 5.078575372695923
+    },
+    {
+      "expected": "refactor: update compiler internals and improve intra-doc links",
+      "predicted": "dencies",
+      "expected_type": "refactor",
+      "predicted_type": "unknown",
+      "valid_format": false,
+      "type_match": false,
+      "inference_time": 12.24195909500122
+    }
+  ],
+  "inference_times": [
+    13.28748083114624,
+    5.488448619842529,
+    40.34253764152527,
+    22.207216024398804,
+    50.01426434516907,
+    12.570252656936646,
+    6.742127180099487,
+    3.9591891765594482,
+    7.102960824966431,
+    5.0918684005737305,
+    6.249081373214722,
+    5.754348516464233,
+    10.49595594406128,
+    4.203453302383423,
+    6.6023945808410645,
+    9.319632768630981,
+    52.43134808540344,
+    6.177433729171753,
+    4.930097341537476,
+    5.467386722564697,
+    7.315634250640869,
+    22.136323928833008,
+    48.81185960769653,
+    13.728877782821655,
+    6.052923679351807,
+    8.321483373641968,
+    13.61866283416748,
+    5.078575372695923,
+    12.24195909500122
+  ],
+  "format_compliance": 0.0,
+  "type_accuracy": 0.0,
+  "exact_match_rate": 0.0,
+  "quality_score": 0.0,
+  "avg_inference_time": 14.335992344494525,
+  "total_inference_time": 415.7437779903412
+}

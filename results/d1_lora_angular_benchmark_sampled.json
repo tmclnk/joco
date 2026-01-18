@@ -1,0 +1,317 @@
+{
+  "dataset": "angular_benchmark",
+  "total": 30,
+  "format_correct": 15,
+  "type_correct": 3,
+  "exact_match": 0,
+  "predictions": [
+    {
+      "expected": "docs: update cross-repo adev docs",
+      "predicted": "{",
+      "expected_type": "docs",
+      "predicted_type": "unknown",
+      "valid_format": false,
+      "type_match": false,
+      "inference_time": 52.041100025177
+    },
+    {
+      "expected": "docs(docs-infra): prevent from showing duplicate usage blocks in functions API docs",
+      "predicted": "feat(api-gen): add class method info component",
+      "expected_type": "docs",
+      "predicted_type": "feat",
+      "valid_format": true,
+      "type_match": false,
+      "inference_time": 11.920433521270752
+    },
+    {
+      "expected": "ci: add pnpm and typescript exclusions to a Renovate package rule.",
+      "predicted": "fix(bazel-module)",
+      "expected_type": "ci",
+      "predicted_type": "unknown",
+      "valid_format": false,
+      "type_match": false,
+      "inference_time": 2.672841787338257
+    },
+    {
+      "expected": "docs(docs-infra): replace deprecated Router.isActive with isActive (#66430)",
+      "predicted": "docs: add isActive function to router providers",
+      "expected_type": "docs",
+      "predicted_type": "docs",
+      "valid_format": true,
+      "type_match": true,
+      "inference_time": 4.386699676513672
+    },
+    {
+      "expected": "docs: update directive name from `[field]` to `[formField]` in signal-forms documentation",
+      "predicted": "### 3. Bind HTML inputs with `[formField]` directive",
+      "expected_type": "docs",
+      "predicted_type": "unknown",
+      "valid_format": false,
+      "type_match": false,
+      "inference_time": 39.60266184806824
+    },
+    {
+      "expected": "build: remove `tsx` dependency and update release script to use `node` directly",
+      "predicted": "feat(vscode-ng-language-service): release TypeScript 4.7.2",
+      "expected_type": "build",
+      "predicted_type": "feat",
+      "valid_format": true,
+      "type_match": false,
+      "inference_time": 13.035428285598755
+    },
+    {
+      "expected": "build: update cross-repo angular dependencies",
+      "predicted": "/setup@2ff164a0ca60e692f3d7e1a982bde9bf3379365e",
+      "expected_type": "build",
+      "predicted_type": "unknown",
+      "valid_format": false,
+      "type_match": false,
+      "inference_time": 52.71253705024719
+    },
+    {
+      "expected": "refactor(http): remove redundant providedIn: 'root' in XSRF_HEADER_NAME",
+      "predicted": "docs: add xsrf token to xssrf header",
+      "expected_type": "refactor",
+      "predicted_type": "docs",
+      "valid_format": true,
+      "type_match": false,
+      "inference_time": 5.7283103466033936
+    },
+    {
+      "expected": "feat(language-server): Add completions and hover info for inline styles",
+      "predicted": "docs: add default project for inline styles",
+      "expected_type": "feat",
+      "predicted_type": "docs",
+      "valid_format": true,
+      "type_match": false,
+      "inference_time": 5.763320684432983
+    },
+    {
+      "expected": "refactor(devtools): add secondary type button",
+      "predicted": "docs: add type icons",
+      "expected_type": "refactor",
+      "predicted_type": "docs",
+      "valid_format": true,
+      "type_match": false,
+      "inference_time": 7.146690845489502
+    },
+    {
+      "expected": "fix(docs-infra): remove trailing slash from sitemap URLs",
+      "predicted": ".realpath);",
+      "expected_type": "fix",
+      "predicted_type": "unknown",
+      "valid_format": false,
+      "type_match": false,
+      "inference_time": 54.73662328720093
+    },
+    {
+      "expected": "docs: update OnChanges API reference w/ signal input",
+      "predicted": "docs: add on-changes hook description",
+      "expected_type": "docs",
+      "predicted_type": "docs",
+      "valid_format": true,
+      "type_match": true,
+      "inference_time": 6.459277391433716
+    },
+    {
+      "expected": "refactor(compiler): tighten `Unary.operator` type",
+      "predicted": "docs: add unary operators",
+      "expected_type": "refactor",
+      "predicted_type": "docs",
+      "valid_format": true,
+      "type_match": false,
+      "inference_time": 2.9654881954193115
+    },
+    {
+      "expected": "docs(docs-infra): Exempts animation-related symbols from linking",
+      "predicted": "docs: add animation and transition links",
+      "expected_type": "docs",
+      "predicted_type": "docs",
+      "valid_format": true,
+      "type_match": true,
+      "inference_time": 3.5620827674865723
+    },
+    {
+      "expected": "docs: release notes for the v21.0.9 release",
+      "predicted": "[82d556a8fb](https://github.com/angular/angular/commit/82d556a8fb38cd2024e3d098c55254305ba12b6b) | fix | Ensure the control instruction comes after the other bindings |",
+      "expected_type": "docs",
+      "predicted_type": "unknown",
+      "valid_format": false,
+      "type_match": false,
+      "inference_time": 24.209464073181152
+    },
+    {
+      "expected": "fix(docs-infra): prevent duplicate description rendering for block API entries",
+      "predicted": "<RawHtml>",
+      "expected_type": "fix",
+      "predicted_type": "unknown",
+      "valid_format": false,
+      "type_match": false,
+      "inference_time": 25.348942279815674
+    },
+    {
+      "expected": "ci: update algolia synonym updater to use node directly rather than tsx",
+      "predicted": "feat(adev): add tsconfig.json and update synonyms.mts",
+      "expected_type": "ci",
+      "predicted_type": "feat",
+      "valid_format": true,
+      "type_match": false,
+      "inference_time": 8.80719518661499
+    },
+    {
+      "expected": "feat(language-server): Add folding range support for inline styles",
+      "predicted": "HTMLLanguageService();",
+      "expected_type": "feat",
+      "predicted_type": "unknown",
+      "valid_format": false,
+      "type_match": false,
+      "inference_time": 39.51834726333618
+    },
+    {
+      "expected": "feat(language-server): Add quick info for inline styles",
+      "predicted": "docs: add inline styles support",
+      "expected_type": "feat",
+      "predicted_type": "docs",
+      "valid_format": true,
+      "type_match": false,
+      "inference_time": 6.419730186462402
+    },
+    {
+      "expected": "fix(compiler): variable counter visiting some expressions twice",
+      "predicted": "docs: add doc for var_counting in pipeline user guide",
+      "expected_type": "fix",
+      "predicted_type": "docs",
+      "valid_format": true,
+      "type_match": false,
+      "inference_time": 10.914705991744995
+    },
+    {
+      "expected": "build: improve changelog generation and tag fetching in release script",
+      "predicted": "docs: add release notes for v14.0.0",
+      "expected_type": "build",
+      "predicted_type": "docs",
+      "valid_format": true,
+      "type_match": false,
+      "inference_time": 7.35991358757019
+    },
+    {
+      "expected": "fix(docs-infra): use public folder instead of assets folder for static files in adev tutorials",
+      "predicted": "diff --git a/adev/src/content/tutorials/first-app/steps/02-Home/src/assets/location-pin.svg b/adev/src/content/tutorials/first-app/steps/02-Home/src/public/location-pin.svg",
+      "expected_type": "fix",
+      "predicted_type": "unknown",
+      "valid_format": false,
+      "type_match": false,
+      "inference_time": 39.97706985473633
+    },
+    {
+      "expected": "docs(docs-infra): Show API decorators docs",
+      "predicted": "[],",
+      "expected_type": "docs",
+      "predicted_type": "unknown",
+      "valid_format": false,
+      "type_match": false,
+      "inference_time": 51.929805517196655
+    },
+    {
+      "expected": "docs(docs-infra): Angular Aria listbox shows placeholder for \"Selection modes\"",
+      "predicted": "'] {",
+      "expected_type": "docs",
+      "predicted_type": "unknown",
+      "valid_format": false,
+      "type_match": false,
+      "inference_time": 51.82294750213623
+    },
+    {
+      "expected": "fix(compiler-cli): support nested component declaration",
+      "predicted": "-      ],",
+      "expected_type": "fix",
+      "predicted_type": "unknown",
+      "valid_format": false,
+      "type_match": false,
+      "inference_time": 52.374051570892334
+    },
+    {
+      "expected": "refactor(compiler): switch `Binary.isAssignmentOperation` to type guard function",
+      "predicted": "fix(expression_parser/ast.ts)",
+      "expected_type": "refactor",
+      "predicted_type": "unknown",
+      "valid_format": false,
+      "type_match": false,
+      "inference_time": 4.698968887329102
+    },
+    {
+      "expected": "docs: release notes for the v21.1.0 release",
+      "predicted": "11905921788b35929436324668271b8f) | fix | add missing type annotations for `ngControl` |",
+      "expected_type": "docs",
+      "predicted_type": "unknown",
+      "valid_format": false,
+      "type_match": false,
+      "inference_time": 58.31207489967346
+    },
+    {
+      "expected": "build: update cross-repo angular dependencies",
+      "predicted": "9ddfe610fc96009212dd14c645ef6",
+      "expected_type": "build",
+      "predicted_type": "unknown",
+      "valid_format": false,
+      "type_match": false,
+      "inference_time": 46.753849029541016
+    },
+    {
+      "expected": "refactor(router): Retain original navigateEvent across redirects",
+      "predicted": "docs: add docs for withExperimentalPlatformNavigation",
+      "expected_type": "refactor",
+      "predicted_type": "docs",
+      "valid_format": true,
+      "type_match": false,
+      "inference_time": 8.775083780288696
+    },
+    {
+      "expected": "build: update dev container configuration",
+      "predicted": "feat(angular): add recommended Dockerfile and devcontainer.json",
+      "expected_type": "build",
+      "predicted_type": "feat",
+      "valid_format": true,
+      "type_match": false,
+      "inference_time": 12.972089290618896
+    }
+  ],
+  "inference_times": [
+    52.041100025177,
+    11.920433521270752,
+    2.672841787338257,
+    4.386699676513672,
+    39.60266184806824,
+    13.035428285598755,
+    52.71253705024719,
+    5.7283103466033936,
+    5.763320684432983,
+    7.146690845489502,
+    54.73662328720093,
+    6.459277391433716,
+    2.9654881954193115,
+    3.5620827674865723,
+    24.209464073181152,
+    25.348942279815674,
+    8.80719518661499,
+    39.51834726333618,
+    6.419730186462402,
+    10.914705991744995,
+    7.35991358757019,
+    39.97706985473633,
+    51.929805517196655,
+    51.82294750213623,
+    52.374051570892334,
+    4.698968887329102,
+    58.31207489967346,
+    46.753849029541016,
+    8.775083780288696,
+    12.972089290618896
+  ],
+  "format_compliance": 0.5,
+  "type_accuracy": 0.1,
+  "exact_match_rate": 0.0,
+  "quality_score": 24.000000000000004,
+  "avg_inference_time": 23.764257820447288,
+  "total_inference_time": 712.9277346134186
+}

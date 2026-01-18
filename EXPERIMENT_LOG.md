@@ -633,6 +633,123 @@ Weak performers (validation):
 
 ---
 
+### Experiment B5: Re-train A2 (Random Forest) on Extended Dataset
+
+**Date**: 2026-01-18
+**Hypothesis**: Re-training Random Forest on extended dataset (1,276 train / 208 val) would improve validation accuracy from 69.0% to 72-76% and reduce overfitting from 24.5% to <15%
+**Approach**: Use same TF-IDF + Random Forest approach as A2 (500 trees, max_depth=20) but train on extended dataset from B1 mining
+
+**Configuration:**
+- Model: TF-IDF (ngram_range=1-2, max_features=1000) + Random Forest
+- Random Forest: n_estimators=500, max_depth=20, min_samples_split=2, class_weight='balanced'
+- Training data: 1,276 examples (from train_extended.jsonl)
+- Validation data: 208 examples (from validation_extended.jsonl)
+- Features: File patterns + diff content (1000 TF-IDF features)
+
+**Results:**
+
+| Metric | Original A2 (small) | B5 (extended) | Change |
+|--------|---------------------|---------------|--------|
+| **Training Accuracy** | 93.5% (261 ex) | 92.5% (1,276 ex) | -1.0pp |
+| **Validation Accuracy** | 69.0% (29 ex) | 60.6% (208 ex) | -8.4pp |
+| **Overfitting Gap** | +24.5% | +31.9% | +7.4pp (worse) |
+| **F1 Score (val)** | N/A | 0.592 | - |
+
+**Comparison with Other Extended Models:**
+
+| Model | Validation Accuracy | Notes |
+|-------|---------------------|-------|
+| B2 (LogReg) | 56.7% | Worst performer |
+| B4 (XGBoost) | 58.2% | 2nd best |
+| **B5 (Random Forest)** | **60.6%** | **BEST** (+2.4pp vs XGBoost) |
+
+**Per-Class Performance (Validation Set):**
+
+| Type | Precision | Recall | F1 | Support |
+|------|-----------|--------|-----|---------|
+| build | 1.00 | 0.36 | 0.53 | 14 |
+| chore | 0.62 | 0.56 | 0.59 | 41 |
+| ci | 0.40 | 0.57 | 0.47 | 7 |
+| **docs** | **0.82** | **0.96** | **0.88** | 47 |
+| feat | 1.00 | 0.19 | 0.32 | 16 |
+| fix | 0.56 | 0.64 | 0.59 | 55 |
+| perf | 0.00 | 0.00 | 0.00 | 3 |
+| refactor | 0.33 | 0.45 | 0.38 | 20 |
+| test | 0.25 | 0.40 | 0.31 | 5 |
+
+**Top Predictive Features:**
+1. FILEDOCS (0.0218) - Documentation file pattern
+2. FILECI + yml extension (0.0209) - CI configuration files
+3. FILECI (0.0200) - CI/CD patterns
+4. .ts extension (0.0181) - TypeScript files
+5. .yml extension (0.0174) - YAML files
+
+**Key Findings:**
+
+1. ❌ **Hypothesis REJECTED**: Validation accuracy decreased from 69.0% to 60.6% (-8.4pp)
+   - Likely explanation: Original validation set (29 examples) was too small and lucky
+   - Extended validation set (208 examples) is more realistic and reliable
+
+2. ❌ **Overfitting increased**: 24.5% -> 31.9% (+7.4pp worse)
+   - Despite more training data, Random Forest still overfits heavily
+   - max_depth=20 may be too deep for this dataset
+
+3. ✅ **Best extended model**: Random Forest (60.6%) > XGBoost (58.2%) > LogReg (56.7%)
+   - Random Forest outperforms other models by +2.4pp
+   - Still better than LogReg baseline despite higher overfitting
+
+4. 💡 **Strong documentation detection**:
+   - docs type: 96% recall, 82% precision (F1=0.88)
+   - FILEDOCS is top predictive feature
+   - File patterns work well for docs classification
+
+5. ⚠️ **Weak on rare classes**:
+   - perf: 0% (3 examples - too few)
+   - test: 0.31 F1 (5 examples)
+   - feat: 0.32 F1 (poor recall at 19%)
+
+6. 🎯 **Reasonable performance on common classes**:
+   - fix: 0.59 F1 (55 examples)
+   - chore: 0.59 F1 (41 examples)
+   - docs: 0.88 F1 (47 examples)
+
+**Why Original A2 Had Better Validation:**
+- Original validation set had only 29 examples (vs 208 now)
+- Small validation sets have high variance
+- 69.0% on 29 examples ≈ getting 20/29 correct (could be luck)
+- 60.6% on 208 examples ≈ 126/208 correct (more reliable)
+
+**Pattern Consistent with B2/B3/B4:**
+- All extended models show validation decrease vs original small dataset
+- B2 (LogReg): 75.9% → 56.7% (-19.2pp)
+- B3 (Enhanced TF-IDF): 65.5% → 59.6% (-5.9pp)
+- B4 (XGBoost): 72.4% → 58.2% (-14.2pp)
+- B5 (Random Forest): 69.0% → 60.6% (-8.4pp)
+- **Pattern**: Original validations were inflated due to small set size (29 examples)
+
+**Relative Performance on Extended Data:**
+- Despite all models degrading, Random Forest (60.6%) is still BEST on extended dataset
+- Shows non-linear models slightly outperform linear (LogReg: 56.7%)
+- But ALL models plateau around 57-61% validation accuracy ceiling
+- Suggests feature engineering is the bottleneck, not model complexity
+
+**Conclusion:**
+Random Forest remains the best performing classical ML model on extended dataset (60.6%) but still has significant overfitting issues (31.9% gap). The original 69.0% validation accuracy was likely inflated due to small validation set size. The extended dataset reveals a ~60% accuracy ceiling for TF-IDF-based approaches. Future work should explore:
+1. Reducing max_depth (try 10, 15) to reduce overfitting
+2. Addressing class imbalance for rare types (perf, test, style)
+3. Alternative feature engineering (embeddings, semantic features)
+4. Ensemble methods combining Random Forest with other models
+
+**Files Created:**
+- `scripts/b5_a2_extended.py` - Random Forest on extended dataset (502 lines)
+
+**Next Steps:**
+- Investigate depth tuning: Does max_depth=10 reduce overfitting while maintaining 60% accuracy?
+- Compare all extended models (B2-B5) side-by-side on Angular benchmark
+- Consider: Has classical ML hit its ceiling at ~60% for this task?
+
+---
+
 ## Structural Feature Classifiers (Track C)
 
 ### Experiment C2: Structural Feature Classifier for Commit Type Prediction
@@ -2008,10 +2125,7 @@ qwen2.5-coder:1.5b (good):
 - Mix of Go, React, FastAPI, Vue, Rust commit messages
 - Chat format with instruction/input/output structure
 
-**Results**: Pending evaluation
-- TODO: Run harness with fine-tuned model
-- TODO: Compare format compliance vs base model
-- TODO: Measure type accuracy improvement
+**Results**: See Experiment D1 below for comprehensive evaluation
 
 **Files Created**:
 - `scripts/finetune-cpu.py` - HuggingFace + PEFT training script
@@ -2022,6 +2136,96 @@ qwen2.5-coder:1.5b (good):
 - CPU training is slow but feasible for small models
 - MLX (Apple Silicon) version exists at `scripts/finetune-mlx.py`
 - Gradient checkpointing conflicts with LoRA on CPU, had to disable
+
+---
+
+### Experiment D1: LoRA Model Baseline Evaluation
+
+**Date**: 2026-01-18
+**Hypothesis**: The CPU-trained LoRA adapter (Experiment 7) would outperform the multi-step prompt baseline (Experiment A9) on conventional commit generation
+**Evaluation Setup**:
+- Model: Qwen2.5-Coder-0.5B-Instruct + LoRA adapter (joco-lora-cpu/)
+- Temperature: 0.3 (deterministic generation)
+- Datasets: validation.jsonl (29), validation_extended.jsonl (30/208 sampled), Angular benchmark (30/100 sampled)
+- Total evaluated: 89 examples
+
+**Results Summary:**
+
+| Dataset | Examples | Format Compliance | Type Accuracy | Quality Score |
+|---------|----------|-------------------|---------------|---------------|
+| validation | 29 | 72.4% (21/29) | 13.8% (4/29) | 34.5/100 |
+| validation_extended | 30 | 93.3% (28/30) | 0.0% (0/30) | 37.3/100 |
+| angular_benchmark | 30 | 50.0% (15/30) | 10.0% (3/30) | **24.0/100** |
+
+**Inference Performance:**
+- validation: 13.5s per example (6.5min total)
+- validation_extended: 5.3s per example (2.7min total)
+- angular_benchmark: 23.8s per example (11.9min total)
+- Overall average: ~14s per example
+
+**Comparison to Multi-Step Prompt Baseline (Experiment A9):**
+
+| Metric | LoRA Model (D1) | Multi-Step Prompt (A9) | Difference |
+|--------|-----------------|------------------------|------------|
+| Format Compliance | 50.0% | 100.0% | **-50.0%** |
+| Type Accuracy | 10.0% | — | — |
+| Quality Score | **24.0/100** | **88.0/100** | **-64.0 points** |
+
+**Critical Findings:**
+
+1. **Catastrophic underperformance**: LoRA model scores 24/100 vs 88/100 for multi-step prompt (-64 points)
+2. **Very poor type accuracy**: 0-14% across datasets (model defaults to "docs" for most commits)
+3. **Inconsistent format compliance**: Ranges from 50% to 93%, with Angular benchmark (format-correctness) at only 50%
+4. **Malformed outputs**: Produces `{`, incomplete commits like `fix(bazel-module)` without description
+5. **No exact matches**: 0/89 exact matches with ground truth
+
+**Sample Predictions:**
+
+Good (rare):
+- Expected: `feat(api-gen): add class method info component`
+- Predicted: `feat(api-gen): add class method info component` ✓
+
+Typical failure (wrong type):
+- Expected: `test(simd): add saturate concat tests`
+- Predicted: `docs: add tests for saturateConcat...` ✗
+
+Critical failure (malformed):
+- Expected: `docs: update cross-repo adev docs`
+- Predicted: `{` ✗
+
+**Root Cause Analysis:**
+
+1. **Insufficient training data**: 261 examples too small for task complexity
+2. **Class imbalance**: Model biased toward "docs" type (likely over-represented in training)
+3. **Model capacity**: 0.5B parameters may be too small
+4. **LoRA constraints**: Rank=8 may be too limited
+5. **Training approach**: Single epoch insufficient, no early stopping
+
+**Why it failed:**
+- Fine-tuning small models on limited data (261 examples) cannot compete with engineered multi-step prompts
+- The multi-step approach (type→scope→description) provides better structure and guidance
+- Type classification requires more examples per class than available in training set
+- Chat format training may not generalize to commit message generation
+
+**Recommendation**: **Abandon LoRA fine-tuning approach**. The multi-step prompt baseline (88/100) is vastly superior and production-ready. Fine-tuning would require:
+- 10x more training data (2,000+ examples)
+- Larger model (1.5B-3B parameters)
+- Multiple epochs with validation-based early stopping
+- Class-balanced training data
+- Higher LoRA rank (16-32)
+
+Even with these improvements, catching up to 88/100 is uncertain. Multi-step prompting is the clear winner.
+
+**Files Created**:
+- `scripts/d1_evaluate_lora.py` - Full evaluation script
+- `scripts/d1_evaluate_lora_sampled.py` - Sampled evaluation (used)
+- `scripts/d1_test_lora.py` - Quick test script
+- `scripts/d1_test_lora_debug.py` - Debug script
+- `results/d1_lora_validation_sampled.json` - Validation results
+- `results/d1_lora_validation_extended_sampled.json` - Extended validation results
+- `results/d1_lora_angular_benchmark_sampled.json` - Angular benchmark results
+
+**Status**: Evaluation complete. LoRA approach deemed non-viable. Multi-step prompt (A9) remains production recommendation.
 
 ---
 
@@ -2114,7 +2318,7 @@ This configuration would prevent the 4096-token failures while maintaining 70%+ 
 - [x] Strict format prompt with type guidance - improves type accuracy, 23% faster
 - [x] Different base models (llama3.2, gemma) - llama3.2:1b wins
 - [x] Finetuned model on curated dataset - LoRA adapter trained
-- [ ] Evaluate fine-tuned model with harness
+- [x] Evaluate fine-tuned model with harness - **FAILED: 24/100 vs 88/100 baseline, approach abandoned**
 - [ ] Distillation from Claude outputs
 - [ ] Train larger model, quantize down
 - [x] Multi-step generation (type→scope→description) - 100% format compliance!

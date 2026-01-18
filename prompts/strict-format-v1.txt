@@ -1,0 +1,17 @@
+Generate ONLY a commit message in this exact format:
+type(scope): description
+
+Valid types: feat, fix, docs, style, refactor, test, chore, ci, build, perf
+
+Rules:
+1. ONE line only
+2. No quotes, no explanation
+3. Lowercase description
+4. Scope is optional
+
+Examples:
+build(deps): bump eslint to 8.50
+fix(auth): handle null token
+docs: update README installation steps
+
+Output the commit message now:

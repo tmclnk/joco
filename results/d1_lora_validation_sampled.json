@@ -1,0 +1,307 @@
+{
+  "dataset": "validation",
+  "total": 29,
+  "format_correct": 21,
+  "type_correct": 4,
+  "exact_match": 0,
+  "predictions": [
+    {
+      "expected": "test(simd): add saturate concat tests",
+      "predicted": "docs: add tests for saturateConcat and saturateToUint16Concat",
+      "expected_type": "test",
+      "predicted_type": "docs",
+      "valid_format": true,
+      "type_match": false,
+      "inference_time": 15.64938735961914
+    },
+    {
+      "expected": "test: fix formatting in codegen comparisons",
+      "predicted": "docs: add missing docstring for equalVarStringNoSpill",
+      "expected_type": "test",
+      "predicted_type": "docs",
+      "valid_format": true,
+      "type_match": false,
+      "inference_time": 6.773527145385742
+    },
+    {
+      "expected": "docs: update changelog with patch releases",
+      "predicted": "### 19.2.1 (Dec 3, 2025)",
+      "expected_type": "docs",
+      "predicted_type": "unknown",
+      "valid_format": false,
+      "type_match": false,
+      "inference_time": 41.770724058151245
+    },
+    {
+      "expected": "refactor(mir): restructure match pair builder",
+      "predicted": "docs: add syntax error messages to match pair errors",
+      "expected_type": "refactor",
+      "predicted_type": "docs",
+      "valid_format": true,
+      "type_match": false,
+      "inference_time": 4.541424989700317
+    },
+    {
+      "expected": "fix(compiler): improve setState-in-render error messages",
+      "predicted": "--- /dev/null",
+      "expected_type": "fix",
+      "predicted_type": "unknown",
+      "valid_format": false,
+      "type_match": false,
+      "inference_time": 49.520830392837524
+    },
+    {
+      "expected": "refactor: restructure thir pattern matching and fix import ambiguity",
+      "predicted": "[compiler.rustc_hir_typeck] r#fix   Improve pattern matching error messages",
+      "expected_type": "refactor",
+      "predicted_type": "unknown",
+      "valid_format": false,
+      "type_match": false,
+      "inference_time": 18.523332118988037
+    },
+    {
+      "expected": "fix(keep-alive): handle async component name in include/exclude matching",
+      "predicted": "docs: add keep-alive docs",
+      "expected_type": "fix",
+      "predicted_type": "docs",
+      "valid_format": true,
+      "type_match": false,
+      "inference_time": 8.202488660812378
+    },
+    {
+      "expected": "docs: update release notes with spanish translation",
+      "predicted": "docs: add release notes",
+      "expected_type": "docs",
+      "predicted_type": "docs",
+      "valid_format": true,
+      "type_match": true,
+      "inference_time": 4.7088940143585205
+    },
+    {
+      "expected": "refactor(compiler): tighten `Binary.operation` type",
+      "predicted": "feat(parser): add assignment operations and binary operations",
+      "expected_type": "refactor",
+      "predicted_type": "feat",
+      "valid_format": true,
+      "type_match": false,
+      "inference_time": 7.31547999382019
+    },
+    {
+      "expected": "fix(generics): improve error handling for wrong number of generic args",
+      "predicted": "docs: add correct error message for wrong number of generic args in macro",
+      "expected_type": "fix",
+      "predicted_type": "docs",
+      "valid_format": true,
+      "type_match": false,
+      "inference_time": 6.7118284702301025
+    },
+    {
+      "expected": "fix(react-server): guard against then property in server reference",
+      "predicted": "feat: add `createModel` function for ReactFlightReplyServer",
+      "expected_type": "fix",
+      "predicted_type": "feat",
+      "valid_format": true,
+      "type_match": false,
+      "inference_time": 8.158138990402222
+    },
+    {
+      "expected": "refactor(compiler-core): optimize getPos with binary search",
+      "predicted": "docs: add token types for newlines",
+      "expected_type": "refactor",
+      "predicted_type": "docs",
+      "valid_format": true,
+      "type_match": false,
+      "inference_time": 5.820605039596558
+    },
+    {
+      "expected": "fix(compiler-core): handle TypeScript type expressions correctly",
+      "predicted": "docs: add type hint for transformExpression",
+      "expected_type": "fix",
+      "predicted_type": "docs",
+      "valid_format": true,
+      "type_match": false,
+      "inference_time": 9.813126802444458
+    },
+    {
+      "expected": "feat(eii): add builtin macro support",
+      "predicted": "docs: add eii macro documentation",
+      "expected_type": "feat",
+      "predicted_type": "docs",
+      "valid_format": true,
+      "type_match": false,
+      "inference_time": 3.2665040493011475
+    },
+    {
+      "expected": "docs: update release notes",
+      "predicted": "docs: update release notes for fastapi 0.9.0",
+      "expected_type": "docs",
+      "predicted_type": "docs",
+      "valid_format": true,
+      "type_match": true,
+      "inference_time": 7.361130714416504
+    },
+    {
+      "expected": "feat(translate): add detailed body to auto-generated PRs",
+      "predicted": "docs: add instructions on how to use LLMs in PRs",
+      "expected_type": "feat",
+      "predicted_type": "docs",
+      "valid_format": true,
+      "type_match": false,
+      "inference_time": 7.317323446273804
+    },
+    {
+      "expected": "feat(compiler): add verbose mode for setState-in-effect validation",
+      "predicted": "}",
+      "expected_type": "feat",
+      "predicted_type": "unknown",
+      "valid_format": false,
+      "type_match": false,
+      "inference_time": 49.51704430580139
+    },
+    {
+      "expected": "fix(exec): use atomic.SwapInt32 to avoid copylocks vet check",
+      "predicted": "docs: add startCalled field to Cmd",
+      "expected_type": "fix",
+      "predicted_type": "docs",
+      "valid_format": true,
+      "type_match": false,
+      "inference_time": 5.52285623550415
+    },
+    {
+      "expected": "feat(runtime-dom): export nodeOps and patchProp",
+      "predicted": "docs: add nodeOps to index",
+      "expected_type": "feat",
+      "predicted_type": "docs",
+      "valid_format": true,
+      "type_match": false,
+      "inference_time": 4.139743328094482
+    },
+    {
+      "expected": "fix(react-server): improve cyclic thenable detection",
+      "predicted": "docs: add docs for ReactFlightReplyServer",
+      "expected_type": "fix",
+      "predicted_type": "docs",
+      "valid_format": true,
+      "type_match": false,
+      "inference_time": 5.7150115966796875
+    },
+    {
+      "expected": "docs: release notes for the vscode extension 21.1.0 release",
+      "predicted": "fix(vsc-extension): convert enum member kind in completions correctly ([50674f8c28](https://github.com/angular/angular/commit/50674f8c28c970e6a9cfe222f9f55bace4e16321))",
+      "expected_type": "docs",
+      "predicted_type": "fix",
+      "valid_format": true,
+      "type_match": false,
+      "inference_time": 28.306593418121338
+    },
+    {
+      "expected": "fix(resolve): relax assertions in import deduplication",
+      "predicted": "fix(imports)",
+      "expected_type": "fix",
+      "predicted_type": "unknown",
+      "valid_format": false,
+      "type_match": false,
+      "inference_time": 8.43014144897461
+    },
+    {
+      "expected": "refactor(simd): change IsNaN from binary to unary operation",
+      "predicted": "NaNFloat64x2",
+      "expected_type": "refactor",
+      "predicted_type": "unknown",
+      "valid_format": false,
+      "type_match": false,
+      "inference_time": 39.314170598983765
+    },
+    {
+      "expected": "docs: fix typo in changelog",
+      "predicted": "feat(core): add support for desctructuring props in SFCs",
+      "expected_type": "docs",
+      "predicted_type": "feat",
+      "valid_format": true,
+      "type_match": false,
+      "inference_time": 11.172633647918701
+    },
+    {
+      "expected": "refactor(borrowck): simplify type check module",
+      "predicted": "Update type-check/mod.rs for borrowck improvements.",
+      "expected_type": "refactor",
+      "predicted_type": "unknown",
+      "valid_format": false,
+      "type_match": false,
+      "inference_time": 3.4196813106536865
+    },
+    {
+      "expected": "docs: add contribution instructions for LLM generated code",
+      "predicted": "docs: add contribution instructions about LLM generated code and comments and automated tools for PRs",
+      "expected_type": "docs",
+      "predicted_type": "docs",
+      "valid_format": true,
+      "type_match": true,
+      "inference_time": 6.841844081878662
+    },
+    {
+      "expected": "refactor(resolve): reorder parameters for consistent old/new ordering",
+      "predicted": "docs: update cross-crate redefinition error message",
+      "expected_type": "refactor",
+      "predicted_type": "docs",
+      "valid_format": true,
+      "type_match": false,
+      "inference_time": 10.069557428359985
+    },
+    {
+      "expected": "docs: update korean translation release notes",
+      "predicted": "docs: update release notes",
+      "expected_type": "docs",
+      "predicted_type": "docs",
+      "valid_format": true,
+      "type_match": true,
+      "inference_time": 3.287522315979004
+    },
+    {
+      "expected": "refactor: update compiler internals and improve intra-doc links",
+      "predicted": "[ci/citool] Fix intra-doc links in generated Rust documentation.",
+      "expected_type": "refactor",
+      "predicted_type": "unknown",
+      "valid_format": false,
+      "type_match": false,
+      "inference_time": 10.605656147003174
+    }
+  ],
+  "inference_times": [
+    15.64938735961914,
+    6.773527145385742,
+    41.770724058151245,
+    4.541424989700317,
+    49.520830392837524,
+    18.523332118988037,
+    8.202488660812378,
+    4.7088940143585205,
+    7.31547999382019,
+    6.7118284702301025,
+    8.158138990402222,
+    5.820605039596558,
+    9.813126802444458,
+    3.2665040493011475,
+    7.361130714416504,
+    7.317323446273804,
+    49.51704430580139,
+    5.52285623550415,
+    4.139743328094482,
+    5.7150115966796875,
+    28.306593418121338,
+    8.43014144897461,
+    39.314170598983765,
+    11.172633647918701,
+    3.4196813106536865,
+    6.841844081878662,
+    10.069557428359985,
+    3.287522315979004,
+    10.605656147003174
+  ],
+  "format_compliance": 0.7241379310344828,
+  "type_accuracy": 0.13793103448275862,
+  "exact_match_rate": 0.0,
+  "quality_score": 34.48275862068966,
+  "avg_inference_time": 13.510248348630707,
+  "total_inference_time": 391.7972021102905
+}
