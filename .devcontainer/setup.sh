@@ -5,7 +5,7 @@ echo "=== Installing system packages ==="
 sudo apt-get update
 sudo apt-get install -y tmux netcat-openbsd build-essential
 
-echo "=== Installing bd CLI ==="
+echo "=== Installing bd cli ==="
 go install github.com/steveyegge/beads/cmd/bd@latest
 
 echo "=== Installing Claude Beads Plugin ==="
