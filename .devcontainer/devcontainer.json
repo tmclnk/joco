@@ -1,7 +1,7 @@
 {
   "name": "General Purpose Dev Container",
   "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
-  "runArgs": ["--storage-opt", "size=30G"],
+  "runArgs": [],
   "features": {
     "ghcr.io/devcontainers/features/common-utils:2": {
       "installZsh": true,
@@ -17,7 +17,10 @@
       "dockerDashComposeVersion": "v2"
     },
     "ghcr.io/devcontainers/features/go:1": {},
-    "ghcr.io/devcontainers/features/java:1": {}
+    "ghcr.io/devcontainers/features/java:1": {},
+    "ghcr.io/devcontainers/features/python:1": {
+      "version": "3.12"
+    }
   },
 
   "customizations": {
@@ -42,6 +45,7 @@
   },
 
   "mounts": [
-    "source=${localEnv:HOME}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=cached"
+    "source=${localEnv:HOME}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=cached",
+    "source=joco-ml-cache,target=/ml-cache,type=volume"
   ]
 }
